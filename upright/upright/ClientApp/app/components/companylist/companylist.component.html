@@ -1,0 +1,24 @@
+﻿<h1>Company List</h1>
+
+<p>Click company to get further information.</p>
+
+<p *ngIf="!companyList"><em>Loading...</em></p>
+
+<table class='table' *ngIf="forecasts">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>ABN</th>
+        <th>Phone</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let company of companyList">
+            <td>{{ company.companyId }}</td>
+            <td>{{ company.companyName }}</td>
+            <td>{{ company.companyAbn }}</td>
+            <td>{{ company.companyPhone1 }}</td>
+        </tr>
+    </tbody>
+</table>
