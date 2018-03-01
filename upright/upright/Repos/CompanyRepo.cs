@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NLog;
 using upright.DBContext;
 using upright.Models;
 
@@ -8,6 +9,7 @@ namespace upright.Repos
 {
     public class CompanyRepo
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public static List<CompanyModel> GetAllCompanyList()
         {
             try
@@ -20,7 +22,7 @@ namespace upright.Repos
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Logger.Error(e);
                 return null;
             }
         }

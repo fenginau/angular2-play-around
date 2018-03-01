@@ -31,16 +31,14 @@ namespace Upright.Controllers
         }
 
         [HttpGet("[action]")]
-        public IEnumerable<CompanyModel> GetAllCompanyList()
+        public IActionResult GetAllCompanyList()
         {
-            try
+            var companyList = CompanyRepo.GetAllCompanyList();
+            if (companyList != null)
             {
-                return CompanyRepo.GetAllCompanyList();
+                return new ObjectResult(companyList);
             }
-            catch (Exception e)
-            {
-                return null;
-            }
+            return StatusCode(500);
         }
 
         public class WeatherForecast

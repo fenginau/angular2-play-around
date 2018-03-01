@@ -2,9 +2,12 @@
 
 <p>Click company to get further information.</p>
 
-<p *ngIf="!companyList"><em>Loading...</em></p>
+<p *ngIf="!companyList">
+    <em *ngIf="!hasError">Loading...</em>
+    <em *ngIf="hasError">{{hasError}}</em>
+</p>
 
-<table class='table' *ngIf="forecasts">
+<table class='table' *ngIf="companyList">
     <thead>
     <tr>
         <th>ID</th>

@@ -7,13 +7,20 @@ import { Http } from '@angular/http';
 })
 export class CompanyListComponent {
     public companyList: ICompanyModel[];
+    public hasError: string;
 
     constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string) { }
 
-    getAllCompany(): void {
+    getAllCompany() {
         this.http.get(this.baseUrl + 'api/upright/GetAllCompanyList').subscribe(result => {
-            this.companyList = result.json() as ICompanyModel[];
-        }, error => console.error(error));
+            if (result.ok) {
+                this.companyList = result.json() as ICompanyModel[];
+                this.hasError = '';
+            }
+        }, error => {
+            this.hasError = 'An error occurred when requesting the data.';
+            console.error(error);
+        });
     }
 
     ngOnInit() {
