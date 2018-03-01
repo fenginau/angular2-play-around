@@ -7,7 +7,7 @@ using upright.Models;
 
 namespace upright.DBContext
 {
-    public class UprightContext : DbContext
+    public class BusinessContext : DbContext
     {
         public virtual DbSet<CompanyModel> Company { get; set; }
 

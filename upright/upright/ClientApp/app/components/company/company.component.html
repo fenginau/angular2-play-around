@@ -1,3 +1,12 @@
-﻿<div>this is the company page</div>
-<div>{{sometext}}</div>
-<button (click)="changeText()">change</button>
+﻿<!--<h2 appHighlight>Company</h2>-->
+<div *ngIf="isEdit; else viewBlock"></div>
+<ng-template #viewBlock>
+    <div>
+
+    </div>
+
+    <h2>Trades</h2>
+</ng-template>
+
+<!--<div>{{sometext}}</div>
+<button (click)="changeText()">change</button>-->

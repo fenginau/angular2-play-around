@@ -2,26 +2,27 @@
 
 <p>Click company to get further information.</p>
 
-<p *ngIf="!companyList">
+<p *ngIf="!companyList ; else companyBlock">
     <em *ngIf="!hasError">Loading...</em>
     <em *ngIf="hasError">{{hasError}}</em>
 </p>
-
-<table class='table' *ngIf="companyList">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>ABN</th>
-        <th>Phone</th>
-    </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let company of companyList">
+<ng-template #companyBlock>
+    <table class='table'>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>ABN</th>
+            <th>Phone</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let company of companyList" (click)="viewDetail(company.companyId)">
             <td>{{ company.companyId }}</td>
             <td>{{ company.companyName }}</td>
             <td>{{ company.companyAbn }}</td>
             <td>{{ company.companyPhone1 }}</td>
         </tr>
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</ng-template>
