@@ -14,8 +14,7 @@ export class CompanyComponent {
     public companyId: number;
     public oldCompany: ICompanyModel;
     public hasError: string;
-    public isEdit: boolean;
-
+    public isEdit: boolean = true;
     constructor(
         private route: ActivatedRoute,
         private location: Location,
@@ -23,6 +22,10 @@ export class CompanyComponent {
         private globals: Globals,
         @Inject('BASE_URL') private baseUrl: string
     ) { }
+
+    changeEdit() {
+        this.isEdit = !this.isEdit;
+    }
 
     getCompany() {
         this.http.get(this.baseUrl + 'api/business/GetCompany?companyid=' + this.companyId).subscribe(result => {
