@@ -1,29 +1,48 @@
-﻿<!--<h2 appHighlight>Company</h2>-->
+﻿<h2>Company Detail</h2>
 <div *ngIf="isEdit; else viewBlock">
-    <div class="form-group has-success has-feedback">
-        <label class="col-sm-2 control-label" for="inputSuccess">Company Name:</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="inputSuccess">
-            <span class="glyphicon glyphicon-ok form-control-feedback"></span>
+    <form data-toggle="validator" role="form" (ngSubmit)="onSubmit(companyForm)" #companyForm="ngForm">
+        <div class="form-group has-feedback">
+            <label for="inputCompanyName" class="control-label">Name</label>
+            <input type="text" class="form-control" id="inputCompanyName" required [(ngModel)]="newCompany.companyName" [ngModelOptions]="{standalone: true}">
+            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+            <div class="help-block with-errors"></div>
         </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label" for="inputWarning">Company Address:</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="inputWarning">
-            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
+        <div class="form-group">
+            <label for="inputCompanyAddress" class="control-label">Address</label>
+            <input type="text" class="form-control" id="inputCompanyAddress" [(ngModel)]="newCompany.companyAddress" [ngModelOptions]="{standalone: true}">
         </div>
-    </div>
-    <div class="form-group has-error has-feedback">
-        <label class="col-sm-2 control-label" for="inputError">Company Email:</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="inputError">
-            <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+        <div class="form-group has-feedback">
+            <label for="inputEmail" class="control-label">Email</label>
+            <input type="email" class="form-control" id="inputEmail" placeholder="Email" data-error="That email address is invalid." [(ngModel)]="newCompany.companyEmail" [ngModelOptions]="{standalone: true}">
+            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+            <div class="help-block with-errors"></div>
         </div>
-    </div>
+        <div class="form-group has-feedback">
+            <label for="inputCompanyPhone" class="control-label">Phone</label>
+            <input type="text" class="form-control" id="inputCompanyPhone" pattern="^[\+]?[_0-9\s]{1,}$" data-error="Phone number is invalid." [(ngModel)]="newCompany.companyPhone1" [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="form-group">
+            <label for="inputCompanyMobile" class="control-label">Mobile</label>
+            <input type="text" class="form-control" id="inputCompanyMobile" pattern="^[\+]?[_0-9\s]{1,}$" data-error="Phone number is invalid." [(ngModel)]="newCompany.companyPhone2" [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="form-group">
+            <label for="inputCompanyContact" class="control-label">Contact</label>
+            <input type="text" class="form-control" id="inputCompanyContact" [(ngModel)]="newCompany.companyContact" [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="form-group">
+            <label for="inputCompanyAbn" class="control-label">ABN</label>
+            <input type="text" class="form-control" id="inputCompanyAbn" [(ngModel)]="newCompany.companyAbn" [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="form-group">
+            <label for="inputCompanyAcn" class="control-label">ACN</label>
+            <input type="text" class="form-control" id="inputCompanyAcn" [(ngModel)]="newCompany.companyAcn" [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
 </div>
 <ng-template #viewBlock>
-    <h2>Company Detail</h2>
     <div class="form-group">
         <label class="control-label col-sm-2">Company Name:</label>
         <div class="col-sm-10">
@@ -31,19 +50,6 @@
         </div>
     </div>
 
-    <h2>Trades</h2>
+    <h3>Trades</h3>
 </ng-template>
 <button type="button" class="btn btn-primary btn-block" (click)="changeEdit()">Change state</button>
-
-<!--<div>{{sometext}}</div>
-<button (click)="changeText()">change</button>-->
-
-COMPANY_ID INT NOT NULL IDENTITY(1,1),
-COMPANY_NAME NVARCHAR(50) NULL,
-COMPANY_ADDRESS NVARCHAR(100) NULL,
-COMPANY_EMAIL NVARCHAR(50) NULL,
-COMPANY_PHONE1 NVARCHAR(20) NULL,
-COMPANY_PHONE2 NVARCHAR(20) NULL,
-COMPANY_CONTACT INT NULL,
-COMPANY_ABN NVARCHAR(20) NULL,
-COMPANY_ACN NVARCHAR(20) NULL,

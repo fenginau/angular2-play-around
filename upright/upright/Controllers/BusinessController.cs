@@ -34,5 +34,15 @@ namespace Upright.Controllers
             }
             return StatusCode(500);
         }
+
+        [HttpPost("[action]")]
+        public IActionResult SaveCompany([FromBody] CompanyModel company)
+        {
+            if (CompanyRepo.SaveCompany(company))
+            {
+                return Ok();
+            }
+            return StatusCode(500);
+        }
     }
 }

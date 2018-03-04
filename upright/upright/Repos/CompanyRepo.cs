@@ -43,5 +43,32 @@ namespace upright.Repos
                 return null;
             }
         }
+
+        public static bool SaveCompany(CompanyModel company)
+        {
+            Logger.Info(company.CompanyId);
+            Logger.Info(company.CompanyName);
+            try
+            {
+                using (var context = new BusinessContext())
+                {
+                    if (company.CompanyId > 0)
+                    {
+                        context.Company.Update(company);
+                    }
+                    else
+                    {
+                        context.Company.Add(company);
+                    }
+                    context.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e);
+                return false;
+            }
+        }
     }
 }
