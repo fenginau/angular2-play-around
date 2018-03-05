@@ -4,10 +4,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { Globals } from '../../utils/globals';
 import { ICompanyModel } from '../../utils/models';
-import { NgForm } from '@angular/forms';
+import { NgForm, NgModel } from '@angular/forms';
 
 @Component({
     selector: 'company',
+    styleUrls: ['./company.component.css'],
     templateUrl: './company.component.html',
     providers: [Globals]
 })
@@ -28,6 +29,7 @@ export class CompanyComponent {
     public testName: string;
     public hasError: string;
     public isEdit: boolean = true;
+    public processing: boolean = false;
     constructor(
         private route: ActivatedRoute,
         private location: Location,
@@ -41,11 +43,9 @@ export class CompanyComponent {
     }
 
     onSubmit(form: NgForm) {
-        if (this.isValidate(this.newCompany)) {
-            console.log(this.newCompany);
-
+        if (form.valid) {
+            this.saveCompany();
         }
-        console.log(form);
     }
 
     saveCompany() {
@@ -59,8 +59,6 @@ export class CompanyComponent {
         });
 
         this.oldCompany = {...this.newCompany};
-        console.log(this.newCompany);
-        console.log(this.oldCompany);
     }
 
     getCompany() {
@@ -76,22 +74,8 @@ export class CompanyComponent {
         });
     }
 
-    isValidate(company: ICompanyModel) {
-        if (company.companyName === '') {
-            console.log(1);
-            return false;
-        }
-        if (company.companyEmail !== '' &&
-            !company.companyEmail.match(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) {
-            console.log(2);
-            return false;
-        }
-        if (company.companyPhone1 !== '' && !company.companyPhone1.match(/^[\+]?[_0-9\s]{1,}$/)) {
-            console.log(3);
-            return false;
-        }
-        if (company.companyPhone2 !== '' && !company.companyPhone2.match(/^[\+]?[_0-9\s]{1,}$/)) {
-            console.log(4);
+    isValid(control: NgModel) {
+        if (control.invalid && (control.dirty || control.touched)) {
             return false;
         }
         return true;

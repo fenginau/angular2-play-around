@@ -1,55 +1,119 @@
-﻿<h2>Company Detail</h2>
-<div *ngIf="isEdit; else viewBlock">
-    <form data-toggle="validator" role="form" (ngSubmit)="onSubmit(companyForm)" #companyForm="ngForm">
-        <div class="form-group has-feedback">
-            <label for="inputCompanyName" class="control-label">Name</label>
-            <input type="text" class="form-control" id="inputCompanyName" required [(ngModel)]="newCompany.companyName" [ngModelOptions]="{standalone: true}">
-            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-            <div class="help-block with-errors"></div>
-        </div>
-        <div class="form-group">
-            <label for="inputCompanyAddress" class="control-label">Address</label>
-            <input type="text" class="form-control" id="inputCompanyAddress" [(ngModel)]="newCompany.companyAddress" [ngModelOptions]="{standalone: true}">
-        </div>
-        <div class="form-group has-feedback">
-            <label for="inputEmail" class="control-label">Email</label>
-            <input type="email" class="form-control" id="inputEmail" placeholder="Email" data-error="That email address is invalid." [(ngModel)]="newCompany.companyEmail" [ngModelOptions]="{standalone: true}">
-            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-            <div class="help-block with-errors"></div>
-        </div>
-        <div class="form-group has-feedback">
-            <label for="inputCompanyPhone" class="control-label">Phone</label>
-            <input type="text" class="form-control" id="inputCompanyPhone" pattern="^[\+]?[_0-9\s]{1,}$" data-error="Phone number is invalid." [(ngModel)]="newCompany.companyPhone1" [ngModelOptions]="{standalone: true}">
-        </div>
-        <div class="form-group">
-            <label for="inputCompanyMobile" class="control-label">Mobile</label>
-            <input type="text" class="form-control" id="inputCompanyMobile" pattern="^[\+]?[_0-9\s]{1,}$" data-error="Phone number is invalid." [(ngModel)]="newCompany.companyPhone2" [ngModelOptions]="{standalone: true}">
-        </div>
-        <div class="form-group">
-            <label for="inputCompanyContact" class="control-label">Contact</label>
-            <input type="text" class="form-control" id="inputCompanyContact" [(ngModel)]="newCompany.companyContact" [ngModelOptions]="{standalone: true}">
-        </div>
-        <div class="form-group">
-            <label for="inputCompanyAbn" class="control-label">ABN</label>
-            <input type="text" class="form-control" id="inputCompanyAbn" [(ngModel)]="newCompany.companyAbn" [ngModelOptions]="{standalone: true}">
-        </div>
-        <div class="form-group">
-            <label for="inputCompanyAcn" class="control-label">ACN</label>
-            <input type="text" class="form-control" id="inputCompanyAcn" [(ngModel)]="newCompany.companyAcn" [ngModelOptions]="{standalone: true}">
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-    </form>
-</div>
-<ng-template #viewBlock>
-    <div class="form-group">
-        <label class="control-label col-sm-2">Company Name:</label>
-        <div class="col-sm-10">
-            <p class="form-control-static">{{oldCompany.companyName}}</p>
-        </div>
+﻿<div>
+    <h2>Company Detail</h2>
+    <div *ngIf="isEdit; else viewBlock">
+        <form (ngSubmit)="onSubmit(companyForm)" #companyForm="ngForm">
+            <div class="form-group has-feedback" [ngClass]="!isValid(name) ? 'has-error' : ''">
+                <label class="control-label" for="inputCompanyName">Name</label>
+                <input type="text" class="form-control" id="inputCompanyName" name="name" required
+                       [(ngModel)]="newCompany.companyName" #name="ngModel">
+                <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" *ngIf="!isValid(name)"></span>
+                <div *ngIf="!isValid(name)" class="alert alert-danger">
+                    Company Name is required.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputCompanyAddress" class="control-label">Address</label>
+                <input type="text" class="form-control" id="inputCompanyAddress"
+                       [(ngModel)]="newCompany.companyAddress" name="inputCompanyAddress">
+            </div>
+            <div class="form-group has-feedback" [ngClass]="!isValid(email) ? 'has-error' : ''">
+                <label class="control-label" for="inputCompanyEmail">Email</label>
+                <input type="text" class="form-control" id="inputCompanyEmail"
+                       pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
+                       [(ngModel)]="newCompany.companyEmail" name="email" #email="ngModel">
+                <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" *ngIf="!isValid(email)"></span>
+                <div *ngIf="!isValid(email)" class="alert alert-danger">
+                    Email is invalid.
+                </div>
+            </div>
+            <div class="form-group has-feedback" [ngClass]="!isValid(phone) ? 'has-error' : ''">
+                <label for="inputCompanyPhone" class="control-label">Phone</label>
+                <input type="text" class="form-control" id="inputCompanyPhone" pattern="^[\+]?[_0-9\s]{1,}$"
+                       [(ngModel)]="newCompany.companyPhone1" name="phone" #phone="ngModel">
+                <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" *ngIf="!isValid(phone)"></span>
+                <div *ngIf="!isValid(phone)" class="alert alert-danger">
+                    Phone number is invalid.
+                </div>
+            </div>
+            <div class="form-group has-feedback" [ngClass]="!isValid(mobile) ? 'has-error' : ''">
+                <label for="inputCompanyMobile" class="control-label">Phone</label>
+                <input type="text" class="form-control" id="inputCompanyMobile" pattern="^[\+]?[_0-9\s]{1,}$"
+                       [(ngModel)]="newCompany.companyPhone2" name="mobile" #mobile="ngModel">
+                <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"
+                      *ngIf="!isValid(mobile)"></span>
+                <div *ngIf="!isValid(mobile)" class="alert alert-danger">
+                    Mobile number is invalid.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputCompanyContact" class="control-label">Contact</label>
+                <input type="text" class="form-control" id="inputCompanyContact" [(ngModel)]="newCompany.companyContact" name="contact">
+            </div>
+            <div class="form-group">
+                <label for="inputCompanyAbn" class="control-label">ABN</label>
+                <input type="text" class="form-control" id="inputCompanyAbn" [(ngModel)]="newCompany.companyAbn" name="abn">
+            </div>
+            <div class="form-group">
+                <label for="inputCompanyAcn" class="control-label">ACN</label>
+                <input type="text" class="form-control" id="inputCompanyAcn" [(ngModel)]="newCompany.companyAcn" name="acn">
+            </div>
+            <div class="form-group">
+                <button type="submit" [disabled]="!companyForm.valid" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
     </div>
-
-    <h3>Trades</h3>
-</ng-template>
-<button type="button" class="btn btn-primary btn-block" (click)="changeEdit()">Change state</button>
+    <ng-template #viewBlock>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-sm-2">Name:</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{{oldCompany.companyName}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Address:</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{{oldCompany.companyAddress}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Email:</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{{oldCompany.companyEmail}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Phone:</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{{oldCompany.companyPhone1}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Mobile:</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{{oldCompany.companyPhone2}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Contact:</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{{oldCompany.companyContact}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">ABN:</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{{oldCompany.companyAbn}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">ACN:</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{{oldCompany.companyAcn}}</p>
+                </div>
+            </div>
+        </form>
+        <h3>Trades</h3>
+    </ng-template>
+    <button type="button" class="btn btn-primary btn-block" (click)="changeEdit()">Change state</button>
+</div>

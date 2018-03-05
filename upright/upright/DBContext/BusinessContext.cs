@@ -15,7 +15,7 @@ namespace upright.DBContext
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Server=localhost;Database=UPRIGHT;User Id=sa;Password=Gr33nacres;");
+                optionsBuilder.UseSqlServer(@"Server=FENG\FENG;Database=UPRIGHT;User Id=sa;Password=greenacres;");
             }
         }
     }
