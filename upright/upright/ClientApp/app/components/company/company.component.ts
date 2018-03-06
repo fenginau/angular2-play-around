@@ -1,4 +1,4 @@
-import { Component, Inject, Input } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { Http } from '@angular/http';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -49,28 +49,34 @@ export class CompanyComponent {
     }
 
     saveCompany() {
+        this.globals.loading(true);
         this.http.post(this.baseUrl + 'api/business/SaveCompany', this.newCompany).subscribe(result => {
             if (result.ok) {
                 console.log('data saved');
             }
+            this.globals.loading(false);
         }, error => {
             this.hasError = 'An error occurred when saving the data.';
             console.error(error);
+            this.globals.loading(false);
         });
 
         this.oldCompany = {...this.newCompany};
     }
 
     getCompany() {
+        this.globals.loading(true);
         this.http.get(this.baseUrl + 'api/business/GetCompany?companyid=' + this.companyId).subscribe(result => {
             if (result.ok) {
                 this.oldCompany = result.json() as ICompanyModel;
                 this.newCompany = {...this.oldCompany};
                 this.hasError = '';
             }
+            this.globals.loading(false);
         }, error => {
             this.hasError = 'An error occurred when requesting the data.';
             console.error(error);
+            this.globals.loading(false);
         });
     }
 
