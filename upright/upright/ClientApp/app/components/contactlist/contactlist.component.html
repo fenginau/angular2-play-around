@@ -1,0 +1,28 @@
+﻿<h1>Contact List</h1>
+
+<p>Click contact to get further information.</p>
+
+<p *ngIf="!contactList ; else contactBlock">
+    <em *ngIf="!hasError">Loading...</em>
+    <em *ngIf="hasError">{{hasError}}</em>
+</p>
+<ng-template #contactBlock>
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Company</th>
+                <th>Email</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let contact of contactList" (click)="viewDetail(contact.contactId)">
+            <td>{{ contact.contactName }}</td>
+            <td>{{ contact.companyName }}</td>
+            <td>{{ contact.contactEmail }}</td>
+            <td>{{ contact.contactPhone1 }}</td>
+        </tr>
+        </tbody>
+    </table>
+</ng-template>

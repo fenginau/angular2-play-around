@@ -1,14 +1,3 @@
 ﻿[
-  {
-    "outputFileName": "wwwroot/js/library.min.js",
-    "inputFiles": [
-      "node_modules/jquery/dist/jquery.min.js",
-      "node_modules/bootstrap-validator/dist/validator.min.js"
-    ],
-    "minify": {
-      "enabled": true,
-      "renameLocals": false
-    },
-    "sourceMap": false
-  }
+  
 ]

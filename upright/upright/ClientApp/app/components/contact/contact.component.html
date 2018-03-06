@@ -1,0 +1,101 @@
+﻿<div>
+    <div *ngIf="isEdit; else viewBlock">
+        <h2>Contact Detail</h2>
+        <form (ngSubmit)="onSubmit(contactForm)" #contactForm="ngForm">
+            <div class="form-group has-feedback" [ngClass]="!isValid(name) ? 'has-error' : ''">
+                <label class="control-label" for="inputContactName">Name</label>
+                <input type="text" class="form-control" id="inputContactName" name="name" required
+                       [(ngModel)]="newContact.contactName" #name="ngModel">
+                <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" *ngIf="!isValid(name)"></span>
+                <div *ngIf="!isValid(name)" class="alert alert-danger">
+                    Contact Name is required.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputContactCompany" class="control-label">Company</label>
+                <input type="text" class="form-control" id="inputContactCompany" [(ngModel)]="newContact.companyId" name="contact">
+            </div>
+            <div class="form-group">
+                <label for="inputContactAddress" class="control-label">Address</label>
+                <input type="text" class="form-control" id="inputContactAddress"
+                       [(ngModel)]="newContact.contactAddress" name="address">
+            </div>
+            <div class="form-group has-feedback" [ngClass]="!isValid(email) ? 'has-error' : ''">
+                <label class="control-label" for="inputContactEmail">Email</label>
+                <input type="text" class="form-control" id="inputContactEmail"
+                       pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
+                       [(ngModel)]="newContact.contactEmail" name="email" #email="ngModel">
+                <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" *ngIf="!isValid(email)"></span>
+                <div *ngIf="!isValid(email)" class="alert alert-danger">
+                    Email is invalid.
+                </div>
+            </div>
+            <div class="form-group has-feedback" [ngClass]="!isValid(phone) ? 'has-error' : ''">
+                <label for="inputContactPhone" class="control-label">Phone</label>
+                <input type="text" class="form-control" id="inputContactPhone" pattern="^[\+]?[_0-9\s]{1,}$"
+                       [(ngModel)]="newContact.contactPhone1" name="phone" #phone="ngModel">
+                <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" *ngIf="!isValid(phone)"></span>
+                <div *ngIf="!isValid(phone)" class="alert alert-danger">
+                    Phone number is invalid.
+                </div>
+            </div>
+            <div class="form-group has-feedback" [ngClass]="!isValid(mobile) ? 'has-error' : ''">
+                <label for="inputContactMobile" class="control-label">Phone</label>
+                <input type="text" class="form-control" id="inputContactMobile" pattern="^[\+]?[_0-9\s]{1,}$"
+                       [(ngModel)]="newContact.contactPhone2" name="mobile" #mobile="ngModel">
+                <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"
+                      *ngIf="!isValid(mobile)"></span>
+                <div *ngIf="!isValid(mobile)" class="alert alert-danger">
+                    Mobile number is invalid.
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" [disabled]="!contactForm.valid" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+    <ng-template #viewBlock>
+        <h2 *ngIf="contactId > 0">Contact Detail</h2>
+        <h2 *ngIf="contactId == 0">New Detail</h2>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-sm-2">Name:</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{{oldContact.contactName}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Company:</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{{oldContact.companyName}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Address:</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{{oldContact.contactAddress}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Email:</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{{oldContact.contactEmail}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Phone:</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{{oldContact.contactPhone1}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Mobile:</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{{oldContact.contactPhone2}}</p>
+                </div>
+            </div>
+        </form>
+        <h3>Trades</h3>
+    </ng-template>
+    <button type="button" class="btn btn-primary btn-block" (click)="changeEdit()">Change state</button>
+</div>

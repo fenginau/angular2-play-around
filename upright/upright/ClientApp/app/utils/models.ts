@@ -15,3 +15,13 @@ export interface IProductModel {
     productDesc: string;
     productMaker: string;
 }
+
+export interface IContactModel {
+    contactId: number;
+    contactName: string;
+    contactEmail: string;
+    contactPhone1: string;
+    contactPhone2: string;
+    companyId: number;
+    companyName: string;
+}

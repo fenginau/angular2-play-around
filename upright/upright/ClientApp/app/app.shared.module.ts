@@ -10,6 +10,8 @@ import { HomeComponent } from './components/home/home.component';
 import { CounterComponent } from './components/counter/counter.component';
 import { CompanyComponent } from './components/company/company.component';
 import { CompanyListComponent } from './components/companylist/companylist.component';
+import { ContactComponent } from './components/contact/contact.component';
+import { ContactListComponent } from './components/contactlist/contactlist.component';
 //import { HighlightDirective } from './utils/directives';
 
 
@@ -21,6 +23,8 @@ import { CompanyListComponent } from './components/companylist/companylist.compo
         NavMenuComponent,
         CounterComponent,
         HomeComponent,
+        ContactComponent,
+        ContactListComponent,
         //directives
         //HighlightDirective
     ],
@@ -34,6 +38,8 @@ import { CompanyListComponent } from './components/companylist/companylist.compo
             { path: 'counter', component: CounterComponent },
             { path: 'company', component: CompanyListComponent },
             { path: 'company/:id', component: CompanyComponent },
+            { path: 'contact', component: ContactListComponent },
+            { path: 'contact/:id', component: ContactComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ]

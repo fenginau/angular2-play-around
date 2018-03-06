@@ -1,34 +1,35 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import { Http } from '@angular/http';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { Globals } from '../../utils/globals';
-import { ICompanyModel } from '../../utils/models';
+import { IContactModel } from '../../utils/models';
 import { NgForm, NgModel } from '@angular/forms';
 
 @Component({
-    selector: 'company',
-    styleUrls: ['./company.component.css'],
-    templateUrl: './company.component.html',
+    selector: 'contact',
+    styleUrls: ['./contact.component.css'],
+    templateUrl: './contact.component.html',
     providers: [Globals]
 })
-export class CompanyComponent {
-    public companyId: number;
-    public oldCompany: ICompanyModel;
-    public newCompany: ICompanyModel = {
+export class ContactComponent {
+    public contactId: number;
+    public oldContact: IContactModel;
+    public newContact: IContactModel = {
+        contactId: 0,
+        contactName: '',
+        contactEmail: '',
+        contactPhone1: '',
+        contactPhone2: '',
         companyId: 0,
-        companyName: '',
-        companyAddress: '',
-        companyEmail: '',
-        companyPhone1: '',
-        companyPhone2: '',
-        companyContact: 0,
-        companyAbn: '',
-        companyAcn: ''
+        companyName: ''
     };
+
     public hasError: string;
-    public isEdit: boolean = true;
     public processing: boolean = false;
+
+    @Input()
+    public isEdit: boolean = true;
     constructor(
         private route: ActivatedRoute,
         private location: Location,
@@ -43,13 +44,13 @@ export class CompanyComponent {
 
     onSubmit(form: NgForm) {
         if (form.valid) {
-            this.saveCompany();
+            this.saveContact();
         }
     }
 
-    saveCompany() {
+    saveContact() {
         this.globals.loading(true);
-        this.http.post(this.baseUrl + 'api/business/SaveCompany', this.newCompany).subscribe(result => {
+        this.http.post(this.baseUrl + 'api/business/SaveContact', this.newContact).subscribe(result => {
             if (result.ok) {
                 console.log('data saved');
             }
@@ -60,15 +61,15 @@ export class CompanyComponent {
             this.globals.loading(false);
         });
 
-        this.oldCompany = {...this.newCompany};
+        this.oldContact = {...this.newContact};
     }
 
-    getCompany() {
+    getContact() {
         this.globals.loading(true);
-        this.http.get(this.baseUrl + 'api/business/GetCompany?companyid=' + this.companyId).subscribe(result => {
+        this.http.get(this.baseUrl + 'api/business/GetContact?contactid=' + this.contactId).subscribe(result => {
             if (result.ok) {
-                this.oldCompany = result.json() as ICompanyModel;
-                this.newCompany = {...this.oldCompany};
+                this.oldContact = result.json() as IContactModel;
+                this.newContact = {...this.oldContact};
                 this.hasError = '';
             }
             this.globals.loading(false);
@@ -88,9 +89,9 @@ export class CompanyComponent {
 
     ngOnInit() {
         let id = this.route.snapshot.paramMap.get('id');
-        this.companyId = Number(id);
-        if (this.companyId > 0) {
-            this.getCompany();
+        this.contactId = Number(id);
+        if (this.contactId > 0) {
+            this.getContact();
         }
     }
 }

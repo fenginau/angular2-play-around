@@ -13,6 +13,7 @@ namespace Upright.Controllers
     [Route("api/[controller]")]
     public class BusinessController : Controller
     {
+        #region company
         [HttpGet("[action]")]
         public IActionResult GetAllCompany()
         {
@@ -44,5 +45,40 @@ namespace Upright.Controllers
             }
             return StatusCode(500);
         }
+        #endregion
+
+        #region contact
+        [HttpGet("[action]")]
+        public IActionResult GetAllContact()
+        {
+            var contactList = ContactRepo.GetAllContact();
+            if (contactList != null)
+            {
+                return new ObjectResult(contactList);
+            }
+            return StatusCode(500);
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult GetContact(int contactId)
+        {
+            var contact = ContactRepo.GetContact(contactId);
+            if (contact != null)
+            {
+                return new ObjectResult(contact);
+            }
+            return StatusCode(500);
+        }
+
+        [HttpPost("[action]")]
+        public IActionResult SaveContact([FromBody] ContactModel contact)
+        {
+            if (ContactRepo.SaveContact(contact))
+            {
+                return Ok();
+            }
+            return StatusCode(500);
+        }
+        #endregion
     }
 }

@@ -1,23 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Azure.KeyVault.Models;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using upright.DBContext;
 using upright.Models;
 
 namespace upright.Repos
 {
-    public class CompanyRepo
+    public class ContactRepo
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        public static List<CompanyModel> GetAllCompany()
+        public static List<ContactModel> GetAllContact()
         {
             try
             {
                 using (var context = new BusinessContext())
                 {
-                    var companyList = context.Company.ToList();
-                    return companyList;
+                    var contactList = context.Contact.FromSql("SELECT C.*, CO.COMPANY_NAME AS CompanyName FROM UR_CONTACT C LEFT JOIN UR_COMPANY CO ON C.COMPANY_ID = CO.COMPANY_ID").ToList();
+                    //contactList.ForEach(contact =>
+                    //{
+                    //    contact.CompanyName = context.Company.Where(c => c.CompanyId == contact.CompanyId).Select(o => o.CompanyName).ToString();
+                    //});
+
+                    return contactList;
                 }
             }
             catch (Exception e)
@@ -27,14 +34,14 @@ namespace upright.Repos
             }
         }
 
-        public static CompanyModel GetCompany(int companyId)
+        public static ContactModel GetContact(int contactId)
         {
             try
             {
                 using (var context = new BusinessContext())
                 {
-                    var company = context.Company.Find(companyId);
-                    return company;
+                    var contact = context.Contact.FromSql($"SELECT C.*, CO.COMPANY_NAME AS CompanyName FROM UR_CONTACT C LEFT JOIN UR_COMPANY CO ON C.COMPANY_ID = CO.COMPANY_ID WHERE C.CONTACT_ID = {contactId}").ToList();
+                    return contact.Count > 0 ? contact[0] : null;
                 }
             }
             catch (Exception e)
@@ -44,19 +51,19 @@ namespace upright.Repos
             }
         }
 
-        public static bool SaveCompany(CompanyModel company)
+        public static bool SaveContact(ContactModel contact)
         {
             try
             {
                 using (var context = new BusinessContext())
                 {
-                    if (company.CompanyId > 0)
+                    if (contact.ContactId > 0)
                     {
-                        context.Company.Update(company);
+                        context.Contact.Update(contact);
                     }
                     else
                     {
-                        context.Company.Add(company);
+                        context.Contact.Add(contact);
                     }
                     context.SaveChanges();
                     return true;
