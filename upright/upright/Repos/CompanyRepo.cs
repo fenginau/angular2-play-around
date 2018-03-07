@@ -11,13 +11,13 @@ namespace upright.Repos
     public class CompanyRepo
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        public static List<CompanyModel> GetAllCompany()
+        public static List<CompanyModel> GetAllCompany(int pp, int page)
         {
             try
             {
                 using (var context = new BusinessContext())
                 {
-                    var companyList = context.Company.ToList();
+                    var companyList = context.Company.Skip(pp * (page - 1)).Take(pp).ToList();
                     return companyList;
                 }
             }
@@ -88,6 +88,24 @@ namespace upright.Repos
                 Logger.Info("Company - GetCompanySelect");
                 Logger.Error(e);
                 return null;
+            }
+        }
+
+        public static int GetCompanyCount()
+        {
+            try
+            {
+                using (var context = new BusinessContext())
+                {
+                    var count = context.Company.Count();
+                    return count;
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Info("Company - GetCompanyCount");
+                Logger.Error(e);
+                return -1;
             }
         }
     }

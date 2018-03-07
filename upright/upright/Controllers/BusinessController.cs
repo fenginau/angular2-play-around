@@ -15,9 +15,9 @@ namespace Upright.Controllers
     {
         #region company
         [HttpGet("[action]")]
-        public IActionResult GetAllCompany()
+        public IActionResult GetAllCompany(int pp, int page)
         {
-            var companyList = CompanyRepo.GetAllCompany();
+            var companyList = CompanyRepo.GetAllCompany(pp, page);
             if (companyList != null)
             {
                 return new ObjectResult(companyList);
@@ -53,6 +53,17 @@ namespace Upright.Controllers
             if (companyList != null)
             {
                 return new ObjectResult(companyList);
+            }
+            return StatusCode(500);
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult GetCompanyCount()
+        {
+            var count = CompanyRepo.GetCompanyCount();
+            if (count > -1)
+            {
+                return new ObjectResult(count);
             }
             return StatusCode(500);
         }
