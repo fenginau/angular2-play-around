@@ -5,7 +5,6 @@
     companyEmail: string;
     companyPhone1: string;
     companyPhone2: string;
-    companyContact: number;
     companyAbn: string;
     companyAcn: string;
 }
@@ -22,6 +21,11 @@ export interface IContactModel {
     contactEmail: string;
     contactPhone1: string;
     contactPhone2: string;
+    companyId: number;
+    companyName: string;
+}
+
+export interface ICompanySelectModel {
     companyId: number;
     companyName: string;
 }

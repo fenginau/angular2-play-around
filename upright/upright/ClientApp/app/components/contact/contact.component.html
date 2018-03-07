@@ -1,6 +1,7 @@
 ﻿<div>
     <div *ngIf="isEdit; else viewBlock">
-        <h2>Contact Detail</h2>
+        <h3 *ngIf="contactId > 0">Edit Contact</h3>
+        <h3 *ngIf="contactId == 0">New Contact</h3>
         <form (ngSubmit)="onSubmit(contactForm)" #contactForm="ngForm">
             <div class="form-group has-feedback" [ngClass]="!isValid(name) ? 'has-error' : ''">
                 <label class="control-label" for="inputContactName">Name</label>
@@ -12,8 +13,11 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputContactCompany" class="control-label">Company</label>
-                <input type="text" class="form-control" id="inputContactCompany" [(ngModel)]="newContact.companyId" name="contact">
+                <label for="selectContactCompany">Company</label>
+                <select class="form-control" id="selectContactCompany" [(ngModel)]="newContact.companyId" name="company">
+                    <option value="0"></option>
+                    <option *ngFor="let company of companySelect" [value]="company.companyId">{{company.companyName}}</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="inputContactAddress" class="control-label">Address</label>
@@ -55,8 +59,10 @@
         </form>
     </div>
     <ng-template #viewBlock>
-        <h2 *ngIf="contactId > 0">Contact Detail</h2>
-        <h2 *ngIf="contactId == 0">New Detail</h2>
+        <div class="row">
+            <div class="col-xs-9"><h3>Contact Detail</h3></div>
+            <div class="col-xs-3 text-right"><button type="button" class="btn btn-primary edit-btn" (click)="setEdit()">Edit</button></div>
+        </div>
         <form class="form-horizontal">
             <div class="form-group">
                 <label class="control-label col-sm-2">Name:</label>
@@ -95,7 +101,5 @@
                 </div>
             </div>
         </form>
-        <h3>Trades</h3>
     </ng-template>
-    <button type="button" class="btn btn-primary btn-block" (click)="changeEdit()">Change state</button>
 </div>

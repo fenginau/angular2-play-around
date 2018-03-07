@@ -14,7 +14,16 @@ import { NgForm, NgModel } from '@angular/forms';
 })
 export class CompanyComponent {
     public companyId: number;
-    public oldCompany: ICompanyModel;
+    public oldCompany: ICompanyModel = {
+        companyId: 0,
+        companyName: '',
+        companyAddress: '',
+        companyEmail: '',
+        companyPhone1: '',
+        companyPhone2: '',
+        companyAbn: '',
+        companyAcn: ''
+    };
     public newCompany: ICompanyModel = {
         companyId: 0,
         companyName: '',
@@ -22,12 +31,11 @@ export class CompanyComponent {
         companyEmail: '',
         companyPhone1: '',
         companyPhone2: '',
-        companyContact: 0,
         companyAbn: '',
         companyAcn: ''
     };
     public hasError: string;
-    public isEdit: boolean = true;
+    public isEdit: boolean = false;
     public processing: boolean = false;
     constructor(
         private route: ActivatedRoute,
@@ -37,8 +45,8 @@ export class CompanyComponent {
         @Inject('BASE_URL') private baseUrl: string
     ) { }
 
-    changeEdit() {
-        this.isEdit = !this.isEdit;
+    setEdit() {
+        this.isEdit = true;
     }
 
     onSubmit(form: NgForm) {
@@ -53,10 +61,12 @@ export class CompanyComponent {
             if (result.ok) {
                 console.log('data saved');
             }
+            this.isEdit = false;
             this.globals.loading(false);
         }, error => {
             this.hasError = 'An error occurred when saving the data.';
             console.error(error);
+            this.isEdit = false;
             this.globals.loading(false);
         });
 

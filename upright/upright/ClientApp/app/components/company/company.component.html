@@ -1,6 +1,7 @@
 ﻿<div>
-    <h2>Company Detail</h2>
     <div *ngIf="isEdit; else viewBlock">
+        <h3 *ngIf="companyId > 0">Edit Company</h3>
+        <h3 *ngIf="companyId == 0">New Company</h3>
         <form (ngSubmit)="onSubmit(companyForm)" #companyForm="ngForm">
             <div class="form-group has-feedback" [ngClass]="!isValid(name) ? 'has-error' : ''">
                 <label class="control-label" for="inputCompanyName">Name</label>
@@ -46,10 +47,6 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputCompanyContact" class="control-label">Contact</label>
-                <input type="text" class="form-control" id="inputCompanyContact" [(ngModel)]="newCompany.companyContact" name="contact">
-            </div>
-            <div class="form-group">
                 <label for="inputCompanyAbn" class="control-label">ABN</label>
                 <input type="text" class="form-control" id="inputCompanyAbn" [(ngModel)]="newCompany.companyAbn" name="abn">
             </div>
@@ -63,6 +60,10 @@
         </form>
     </div>
     <ng-template #viewBlock>
+        <div class="row">
+            <div class="col-xs-9"><h3>Company Detail</h3></div>
+            <div class="col-xs-3 text-right"><button type="button" class="btn btn-primary edit-btn" (click)="setEdit()">Edit</button></div>
+        </div>
         <form class="form-horizontal">
             <div class="form-group">
                 <label class="control-label col-sm-2">Name:</label>
@@ -95,12 +96,6 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-2">Contact:</label>
-                <div class="col-sm-10">
-                    <p class="form-control-static">{{oldCompany.companyContact}}</p>
-                </div>
-            </div>
-            <div class="form-group">
                 <label class="control-label col-sm-2">ABN:</label>
                 <div class="col-sm-10">
                     <p class="form-control-static">{{oldCompany.companyAbn}}</p>
@@ -115,5 +110,4 @@
         </form>
         <h3>Trades</h3>
     </ng-template>
-    <button type="button" class="btn btn-primary btn-block" (click)="changeEdit()">Change state</button>
 </div>

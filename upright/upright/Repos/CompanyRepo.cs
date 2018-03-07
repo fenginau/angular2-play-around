@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using upright.DBContext;
 using upright.Models;
@@ -22,6 +23,7 @@ namespace upright.Repos
             }
             catch (Exception e)
             {
+                Logger.Info("Company - GetAllCompany");
                 Logger.Error(e);
                 return null;
             }
@@ -39,6 +41,7 @@ namespace upright.Repos
             }
             catch (Exception e)
             {
+                Logger.Info("Company - GetCompany");
                 Logger.Error(e);
                 return null;
             }
@@ -64,8 +67,27 @@ namespace upright.Repos
             }
             catch (Exception e)
             {
+                Logger.Info("Company - SaveCompany");
                 Logger.Error(e);
                 return false;
+            }
+        }
+
+        public static List<CompanySelectModel> GetCompanySelect()
+        {
+            try
+            {
+                using (var context = new BusinessContext())
+                {
+                    var companyList = context.CompanySelect.FromSql("SELECT COMPANY_ID, COMPANY_NAME FROM UR_COMPANY ORDER BY COMPANY_NAME").ToList();
+                    return companyList;
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Info("Company - GetCompanySelect");
+                Logger.Error(e);
+                return null;
             }
         }
     }

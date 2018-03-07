@@ -19,8 +19,6 @@ namespace upright.Models
         public string CompanyPhone1 { get; set; }
         [Column("COMPANY_PHONE2")]
         public string CompanyPhone2 { get; set; }
-        [Column("COMPANY_CONTACT")]
-        public int? CompanyContact { get; set; }
         [Column("COMPANY_ABN")]
         public string CompanyAbn { get; set; }
         [Column("COMPANY_ACN")]

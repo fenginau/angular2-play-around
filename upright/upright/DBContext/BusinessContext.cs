@@ -9,7 +9,10 @@ namespace upright.DBContext
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public virtual DbSet<CompanyModel> Company { get; set; }
+        public virtual DbSet<CompanySelectModel> CompanySelect { get; set; }
+
         public virtual DbSet<ContactModel> Contact { get; set; }
+        public virtual DbSet<ContactViewModel> ContactView { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

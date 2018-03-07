@@ -3,8 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace upright.Models
 {
-    [Table("UR_CONTACT")]
-    public class ContactModel
+    public class ContactViewModel
     {
         [Key]
         [Column("CONTACT_ID")]
@@ -21,5 +20,7 @@ namespace upright.Models
         public string ContactPhone2 { get; set; }
         [Column("COMPANY_ID")]
         public int? CompanyId { get; set; }
+        [Column("COMPANY_NAME")]
+        public string CompanyName { get; set; }
     }
 }
