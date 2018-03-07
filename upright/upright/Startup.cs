@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NLog;
+using upright.Models;
 
 namespace upright
 {
@@ -26,8 +28,12 @@ namespace upright
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            var appSettings = Configuration.GetSection("AppSettings").Get<AppSettings>();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

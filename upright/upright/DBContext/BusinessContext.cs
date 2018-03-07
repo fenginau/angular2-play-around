@@ -1,10 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NLog;
 using upright.Models;
 
 namespace upright.DBContext
 {
     public class BusinessContext : DbContext
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public virtual DbSet<CompanyModel> Company { get; set; }
         public virtual DbSet<ContactModel> Contact { get; set; }
 
@@ -12,8 +15,7 @@ namespace upright.DBContext
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Server=localhost;Database=UPRIGHT;User Id=sa;Password=Gr33nacres;");
-                //optionsBuilder.UseSqlServer(@"Server=FENG\FENG;Database=UPRIGHT;User Id=sa;Password=greenacres;");
+                optionsBuilder.UseSqlServer(AppSettings.ConnectionString);
             }
         }
     }
