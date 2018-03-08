@@ -1,0 +1,9 @@
+.pp-select {
+    width: 70px;
+    margin: 0 10px;
+    display: inline;
+}
+
+a {
+    cursor: pointer;
+}

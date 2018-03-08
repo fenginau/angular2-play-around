@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
+import { SearchareaComponent } from './components/searcharea/searcharea.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
 import { HomeComponent } from './components/home/home.component';
 import { CounterComponent } from './components/counter/counter.component';
 import { CompanyComponent } from './components/company/company.component';
@@ -21,6 +23,8 @@ import { ContactListComponent } from './components/contactlist/contactlist.compo
         CompanyComponent,
         CompanyListComponent,
         NavMenuComponent,
+        SearchareaComponent,
+        PaginationComponent,
         CounterComponent,
         HomeComponent,
         ContactComponent,

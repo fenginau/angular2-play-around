@@ -1,19 +1,13 @@
 ﻿<h3>Company List</h3>
 
-<p>Click company to get further information.</p>
+<search-area [module]="'company'" [fields]="fields" [message]="'Click company to get further information.'"></search-area>
 
 <p *ngIf="!companyList ; else dataBlock">
     <em *ngIf="!hasError">Loading...</em>
     <em *ngIf="hasError">{{hasError}}</em>
 </p>
+
 <ng-template #dataBlock>
-    <div class="text-right">
-        <select class="form-control input-sm pp-select" id="selectPp" [(ngModel)]="perPage" name="perpage" (change)="setPage()">
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="40">40</option>
-        </select> per page
-    </div>
     <table class="table">
         <thead>
         <tr>
@@ -32,21 +26,5 @@
         </tr>
         </tbody>
     </table>
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            <li [ngClass]="index == 1 ? 'disabled' : ''">
-                <a aria-label="Previous" (click)="pageClick(index - 1)">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li *ngFor="let i of pages" [ngClass]="i === index ? 'active' : ''">
-                <a (click)="pageClick(i)">{{i}}</a>
-            </li>
-            <li [ngClass]="index == totalPage ? 'disabled' : ''">
-                <a aria-label="Next" (click)="pageClick(index + 1)">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
 </ng-template>
+<pagination [count]="count" [maxPage]="7" (current)="getAllCompany($event)" (pp)="ppChange($event)"></pagination>

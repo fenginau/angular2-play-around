@@ -27,18 +27,4 @@ export class Globals {
     goback() {
         this.location.back();
     }
-
-    getPages(total: number, current: number, maxPage: number) {
-        let half = Math.floor((maxPage - 1) / 2);
-        let start: number;
-        let end: number;
-        if (current - 1 >= total - current) {
-            end = Math.min(total, current + half);
-            start = Math.max(1, end - half * 2);
-        } else {
-            start = Math.max(1, current - half);
-            end = Math.min(total, start + half * 2);
-        }
-        return [...Array.from(Array(total + 1).keys())].slice(1).slice(start - 1, end);
-    }
 }

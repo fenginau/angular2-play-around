@@ -1,0 +1,11 @@
+.search-field {
+    margin-bottom: 20px;
+    background-color: rgba(65, 136, 199, 0.15);
+    border: 1px solid transparent;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+
+.form-inline {
+    margin: 15px;
+}

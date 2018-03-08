@@ -12,11 +12,9 @@ import { ICompanyModel } from "../../utils/models";
 export class CompanyListComponent {
     companyList: ICompanyModel[];
     hasError: string = '';
-    count: number;
+    count: number = 0;
     perPage: number = 20;
-    pages: number[];
-    index: number = 1;
-    totalPage: number = 0;
+    fields: string[] = ['All', 'Name', 'Address', 'Email', 'Phone', 'ABN', 'ACN'];
 
     constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string, private globals: Globals) { }
 
@@ -34,22 +32,12 @@ export class CompanyListComponent {
         this.http.get(`${this.baseUrl}api/business/GetCompanyCount`).subscribe(result => {
             if (result.ok) {
                 this.count = result.json() as number;
-                this.setPage();
             }
         }, error => this.getError(error));
     }
 
-    setPage() {
-        this.totalPage = Math.ceil(this.count / this.perPage);
-        this.pageClick(1);
-    }
-
-    pageClick(index: number) {
-        if (index > 0 && index < this.totalPage + 1) {
-            this.index = index;
-            this.pages = this.globals.getPages(this.totalPage, index, 9);
-            this.getAllCompany(index);
-        }
+    ppChange(pp: number) {
+        this.perPage = pp;
     }
 
     getError(error :any) {
