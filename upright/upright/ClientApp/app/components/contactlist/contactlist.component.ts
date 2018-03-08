@@ -12,26 +12,55 @@ import { IContactModel } from "../../utils/models";
 export class ContactListComponent {
     public contactList: IContactModel[];
     public hasError: string;
+    count: number;
+    perPage: number = 20;
+    pages: number[];
+    index: number = 1;
+    totalPage: number = 0;
 
     constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string, private globals: Globals) { }
 
-    getAllContact() {
-        this.http.get(this.baseUrl + 'api/business/GetAllContact').subscribe(result => {
+    getAllContact(index: number) {
+        this.http.get(`${this.baseUrl}api/business/GetAllContact?pp=${this.perPage}&page=${index}`).subscribe(result => {
             if (result.ok) {
                 this.contactList = result.json() as IContactModel[];
-                this.hasError = '';
             }
-        }, error => {
-            this.hasError = 'An error occurred when requesting the data.';
-            console.error(error);
-        });
+            this.globals.loading(false);
+        }, error => this.getError(error));
+    }
+
+    getCount() {
+        this.globals.loading(true);
+        this.http.get(`${this.baseUrl}api/business/GetContactCount`).subscribe(result => {
+            if (result.ok) {
+                this.count = result.json() as number;
+                this.setPage();
+            }
+        }, error => this.getError(error));
+    }
+
+    setPage() {
+        this.totalPage = Math.ceil(this.count / this.perPage);
+        this.pageClick(1);
+    }
+
+    pageClick(index: number) {
+        this.index = index;
+        this.pages = this.globals.getPages(this.totalPage, index);
+        this.getAllContact(index);
+    }
+
+    getError(error: any) {
+        this.hasError = 'An error occurred when requesting the data.';
+        console.error(error);
+        this.globals.loading(false);
     }
 
     viewDetail(contactId: number) {
-        this.globals.goto('contact/' + contactId, {});
+        this.globals.goto(`contact/${contactId}`, {});
     }
 
     ngOnInit() {
-        this.getAllContact();
+        this.getCount();
     }
 }

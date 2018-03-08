@@ -3,3 +3,13 @@ tbody tr:hover {
     color: white;
     cursor: pointer;
 }
+
+.pp-select {
+    width: 60px;
+    margin: 0 10px;
+    display: inline;
+}
+
+a {
+    cursor: pointer;
+}

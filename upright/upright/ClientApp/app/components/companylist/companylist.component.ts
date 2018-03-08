@@ -14,13 +14,13 @@ export class CompanyListComponent {
     hasError: string = '';
     count: number;
     perPage: number = 20;
-    oldPp: number = 0;
     pages: number[];
+    index: number = 1;
+    totalPage: number = 0;
 
     constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string, private globals: Globals) { }
 
     getAllCompany(index: number) {
-        this.globals.loading(true);
         this.http.get(`${this.baseUrl}api/business/GetAllCompany?pp=${this.perPage}&page=${index}`).subscribe(result => {
             if (result.ok) {
                 this.companyList = result.json() as ICompanyModel[];
@@ -34,18 +34,20 @@ export class CompanyListComponent {
         this.http.get(`${this.baseUrl}api/business/GetCompanyCount`).subscribe(result => {
             if (result.ok) {
                 this.count = result.json() as number;
-                this.calcPage();
-                this.getAllCompany(1);
+                this.setPage();
             }
         }, error => this.getError(error));
     }
 
-    calcPage() {
-        if (this.oldPp !== this.perPage) {
-            this.oldPp = this.perPage;
-            this.pages = [...Array.from(Array(Math.ceil(this.count / this.perPage) + 1).keys())].slice(1);
-            console.log(this.pages);
-        }
+    setPage() {
+        this.totalPage = Math.ceil(this.count / this.perPage);
+        this.pageClick(1);
+    }
+
+    pageClick(index: number) {
+        this.index = index;
+        this.pages = this.globals.getPages(this.totalPage, index);
+        this.getAllCompany(index);
     }
 
     getError(error :any) {

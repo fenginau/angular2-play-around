@@ -11,13 +11,13 @@ namespace upright.Repos
     public class ContactRepo
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        public static List<ContactViewModel> GetAllContact()
+        public static List<ContactViewModel> GetAllContact(int pp, int page)
         {
             try
             {
                 using (var context = new BusinessContext())
                 {
-                    var contactList = context.ContactView.FromSql("SELECT C.*, CO.COMPANY_NAME FROM UR_CONTACT C LEFT JOIN UR_COMPANY CO ON C.COMPANY_ID = CO.COMPANY_ID").ToList();
+                    var contactList = context.ContactView.FromSql("SELECT C.*, CO.COMPANY_NAME FROM UR_CONTACT C LEFT JOIN UR_COMPANY CO ON C.COMPANY_ID = CO.COMPANY_ID").Skip(pp * (page - 1)).Take(pp).ToList();
 
                     return contactList;
                 }
@@ -71,6 +71,24 @@ namespace upright.Repos
                 Logger.Info("Contact - SaveContact");
                 Logger.Error(e);
                 return false;
+            }
+        }
+
+        public static int GetContactCount()
+        {
+            try
+            {
+                using (var context = new BusinessContext())
+                {
+                    var count = context.Contact.Count();
+                    return count;
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Info("Contact - GetContactCount");
+                Logger.Error(e);
+                return -1;
             }
         }
     }

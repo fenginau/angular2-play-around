@@ -72,9 +72,9 @@ namespace Upright.Controllers
 
         #region contact
         [HttpGet("[action]")]
-        public IActionResult GetAllContact()
+        public IActionResult GetAllContact(int pp, int page)
         {
-            var contactList = ContactRepo.GetAllContact();
+            var contactList = ContactRepo.GetAllContact(pp, page);
             if (contactList != null)
             {
                 return new ObjectResult(contactList);
@@ -99,6 +99,17 @@ namespace Upright.Controllers
             if (ContactRepo.SaveContact(contact))
             {
                 return Ok();
+            }
+            return StatusCode(500);
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult GetContactCount()
+        {
+            var count = ContactRepo.GetContactCount();
+            if (count > -1)
+            {
+                return new ObjectResult(count);
             }
             return StatusCode(500);
         }
