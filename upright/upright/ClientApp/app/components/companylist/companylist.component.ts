@@ -45,9 +45,11 @@ export class CompanyListComponent {
     }
 
     pageClick(index: number) {
-        this.index = index;
-        this.pages = this.globals.getPages(this.totalPage, index);
-        this.getAllCompany(index);
+        if (index > 0 && index < this.totalPage + 1) {
+            this.index = index;
+            this.pages = this.globals.getPages(this.totalPage, index, 9);
+            this.getAllCompany(index);
+        }
     }
 
     getError(error :any) {

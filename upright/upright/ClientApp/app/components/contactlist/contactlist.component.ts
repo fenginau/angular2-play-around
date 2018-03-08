@@ -45,9 +45,11 @@ export class ContactListComponent {
     }
 
     pageClick(index: number) {
-        this.index = index;
-        this.pages = this.globals.getPages(this.totalPage, index);
-        this.getAllContact(index);
+        if (index > 0 && index < this.totalPage + 1) {
+            this.index = index;
+            this.pages = this.globals.getPages(this.totalPage, index, 9);
+            this.getAllContact(index);
+        }
     }
 
     getError(error: any) {
