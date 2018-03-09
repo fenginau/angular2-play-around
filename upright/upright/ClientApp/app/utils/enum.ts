@@ -1,0 +1,1 @@
+﻿export enum SearchControl { Unchangable= 0, Input= 1, Dropdown= 2, Checkbox= 3, Radio= 4, MultiSelect= 5 }

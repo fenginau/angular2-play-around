@@ -1,4 +1,4 @@
-﻿import { Injectable, Output, EventEmitter } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { SharedService } from '../utils/sharedservice';

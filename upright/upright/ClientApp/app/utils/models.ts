@@ -29,3 +29,15 @@ export interface ICompanySelectModel {
     companyId: number;
     companyName: string;
 }
+
+export interface ISearchModel {
+    field: string;
+    control: number;
+    value: any;
+    set: IValueTextModel[]|null;
+}
+
+export interface IValueTextModel {
+    value: string|number;
+    text: string;
+}

@@ -51,7 +51,12 @@ export class ContactComponent {
     ) { }
 
     setEdit() {
+        this.newContact = { ...this.oldContact };
         this.isEdit = true;
+    }
+
+    cancelEdit() {
+        this.isEdit = false;
     }
 
     onSubmit(form: NgForm) {

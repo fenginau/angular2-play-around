@@ -14,19 +14,44 @@
     </div>
 
     <div id="searchArea" class="collapse search-field">
-        <form class="form-inline">
-            <div class="form-group">
-                <select class="form-control" id="selectField" name="field" aria-labelledby="field">
-                    <option *ngFor="let field of fields; let i = index" [value]="i">{{field}}</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="search"></label>
-                <input type="text" class="form-control" id="search">
-            </div>
-            <button type="button" class="btn btn-info">
-                <span class="glyphicon glyphicon-search"></span> Search
-            </button>
-        </form>
+        <div *ngFor="let condition of conditions; let m = index">
+            <form class="form-inline">
+                <div class="form-group custom-comtainer">
+                    <select class="form-control" id="selectField{{m}}" name="field{{m}}" aria-labelledby="field" [(ngModel)]="conditions[m].field" (change)="onChangeField(conditions[m].field, m)">
+                        <option *ngFor="let field of fields; let i = index" [value]="field.field">{{field.field}}</option>
+                    </select>
+                </div>
+                <div class="form-group custom-comtainer" *ngIf="conditions[m].control == searchControl.Input">
+                    <input type="text" class="form-control" id="search" [(ngModel)]="conditions[m].value" name="input{{m}}">
+                </div>
+                <div class="form-group custom-comtainer" *ngIf="conditions[m].control == searchControl.Dropdown && conditions[m].set != null">
+                    <select class="form-control" id="select{{m}}" name="select{{m}}" aria-labelledby="field" [(ngModel)]="conditions[m].value">
+                        <option *ngFor="let option of conditions[m].set;" [value]="option.value">{{option.text}}</option>
+                    </select>
+                </div>
+                <div class="form-group custom-comtainer" *ngIf="conditions[m].control == searchControl.Checkbox && conditions[m].set != null">
+                    <label class="checkbox" *ngFor="let option of conditions[m].set;">
+                        {{option.text}}
+                        <input type="checkbox" [value]="option.value" [(ngModel)]="conditions[m].value" name="cb{{option.value}}">
+                        <span class="checkmark-cb"></span>
+                    </label>
+                </div>
+                <div class="form-group custom-comtainer" *ngIf="conditions[m].control == searchControl.Radio && conditions[m].set != null">
+                    <label class="radio" *ngFor="let option of conditions[m].set;">
+                        {{option.text}}
+                        <input type="radio" name="radio{{option.value}}" [value]="option.value" [(ngModel)]="conditions[m].value">
+                        <span class="checkmark-rd"></span>
+                    </label>
+                </div>
+                <div class="form-group custom-comtainer" *ngIf="conditions[m].control == searchControl.MultiSelect && conditions[m].set != null">
+                    <select class="form-control" multiple id="multi{{m}}" name="multi{{m}}" aria-labelledby="field" [(ngModel)]="conditions[m].value">
+                        <option *ngFor="let option of conditions[m].set;" [value]="option.value">{{option.text}}</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-info" (click)="check()">
+                    <span class="glyphicon glyphicon-search"></span> Search
+                </button>
+            </form>
+        </div>
     </div>
 </div>
