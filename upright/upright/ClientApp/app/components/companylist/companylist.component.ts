@@ -16,18 +16,12 @@ export class CompanyListComponent {
     hasError: string = '';
     count: number = 0;
     perPage: number = 20;
-    //fields: string[] = ['Name', 'Address', 'Email', 'Phone', 'Mobile', 'ABN', 'ACN'];
-    vt: IValueTextModel[] = [
-        { value: 0, text: 'opt1' },
-        { value: 1, text: 'opt2' },
-        { value: 2, text: 'opt3' },
-        { value: 3, text: 'opt4' }];
     fields: ISearchModel[] = [
         { field: 'Name', control: SearchControl.Input, value: '', set: null },
-        { field: 'Address', control: SearchControl.Dropdown, value: '', set: this.vt },
-        { field: 'Email', control: SearchControl.Checkbox, value: '', set: this.vt },
-        { field: 'Phone', control: SearchControl.MultiSelect, value: '', set: this.vt },
-        { field: 'Mobile', control: SearchControl.Radio, value: '', set: this.vt },
+        { field: 'Address', control: SearchControl.Input, value: '', set: null },
+        { field: 'Email', control: SearchControl.Input, value: '', set: null },
+        { field: 'Phone', control: SearchControl.Input, value: '', set: null },
+        { field: 'Mobile', control: SearchControl.Input, value: '', set: null },
         { field: 'ABN', control: SearchControl.Input, value: '', set: null },
         { field: 'ACN', control: SearchControl.Input, value: '', set: null }];
 
@@ -62,6 +56,7 @@ export class CompanyListComponent {
     }
 
     getSearchResult(result: any) {
+        this.companyList = result as ICompanyModel[];
         console.log(result);
     }
 

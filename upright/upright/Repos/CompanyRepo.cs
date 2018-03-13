@@ -110,7 +110,7 @@ namespace upright.Repos
             }
         }
 
-        public static List<CompanyModel> Search(List<SearchParamModel> searchParams)
+        public static dynamic Search(List<SearchParamModel> searchParams, int pp, int page)
         {
             try
             {
@@ -128,10 +128,11 @@ namespace upright.Repos
                 using (var context = new BusinessContext())
                 {
                     var condition = new StringBuilder();
-                    var condStr = new StringBuilder();
+                    StringBuilder condStr;
                     condition.AppendLine("WHERE 1 = 1");
                     searchParams.ForEach(s =>
                     {
+                        condStr = new StringBuilder();
                         var column = dic[s.Key.ToUpper()];
                         switch (s.Key.ToUpper())
                         {
@@ -155,9 +156,11 @@ namespace upright.Repos
 
                         condition.AppendLine($"AND {condStr}");
                     });
-                    Logger.Info($"SELECT * FROM UR_COMPANY {condition}");
-                    var companyList = context.Company.FromSql($"SELECT * FROM UR_COMPANY {condition}").ToList();
-                    return companyList;
+                    var sql = $"SELECT * FROM UR_COMPANY {condition}";
+                    Logger.Info(sql);
+                    var count = context.Company.FromSql(sql).Count();
+                    var companyList = context.Company.FromSql(sql).Skip(pp * (page - 1)).Take(pp).ToList();
+                    return new { count, companyList };
                 }
             }
             catch (Exception e)

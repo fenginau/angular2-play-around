@@ -120,12 +120,16 @@ namespace Upright.Controllers
         #region search
 
         [HttpPost("[action]")]
-        public IActionResult Search(string module, [FromBody] List<SearchParamModel> searchParamList)
+        public IActionResult Search(string module, int pp, int page, [FromBody] List<SearchParamModel> searchParamList)
         {
             switch (module.ToUpper())
             {
                 case "COMPANY":
-                    CompanyRepo.Search(searchParamList);
+                    var result = CompanyRepo.Search(searchParamList, pp, page);
+                    if (result != null)
+                    {
+                        return new ObjectResult(result); ;
+                    }
                     break;
                 case "CONTACT":
                     break;
@@ -135,7 +139,6 @@ namespace Upright.Controllers
                     break;
 
             }
-            return new ObjectResult(searchParamList);
             return StatusCode(500);
         }
 
