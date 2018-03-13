@@ -30,14 +30,22 @@ export interface ICompanySelectModel {
     companyName: string;
 }
 
+
+// used by search component
 export interface ISearchModel {
     field: string;
     control: number;
     value: any;
-    set: IValueTextModel[]|null;
+    set?: IValueTextModel[]|null;
 }
 
 export interface IValueTextModel {
-    value: string|number;
+    value: string|number|boolean;
     text: string;
+    select?: string|number|boolean;
+}
+
+export interface ISearchParams {
+    key: string;
+    value: string;
 }

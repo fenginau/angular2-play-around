@@ -6,9 +6,7 @@
         <div class="col-xs-3 text-right">
             <button type="button" class="btn btn-primary btn-xs" data-toggle="collapse" data-target="#searchArea">
                 Search&nbsp;
-                <span class="pull-right">
-                    <span class="glyphicon glyphicon-triangle-bottom"></span>
-                </span>
+                <span class="glyphicon glyphicon-triangle-bottom"></span>
             </button>
         </div>
     </div>
@@ -23,6 +21,7 @@
                 </div>
                 <div class="form-group custom-comtainer" *ngIf="conditions[m].control == searchControl.Input">
                     <input type="text" class="form-control" id="search" [(ngModel)]="conditions[m].value" name="input{{m}}">
+                    <small class="text-muted">Use comma [,] to separate.</small>
                 </div>
                 <div class="form-group custom-comtainer" *ngIf="conditions[m].control == searchControl.Dropdown && conditions[m].set != null">
                     <select class="form-control" id="select{{m}}" name="select{{m}}" aria-labelledby="field" [(ngModel)]="conditions[m].value">
@@ -32,7 +31,7 @@
                 <div class="form-group custom-comtainer" *ngIf="conditions[m].control == searchControl.Checkbox && conditions[m].set != null">
                     <label class="checkbox" *ngFor="let option of conditions[m].set;">
                         {{option.text}}
-                        <input type="checkbox" [value]="option.value" [(ngModel)]="conditions[m].value" name="cb{{option.value}}">
+                        <input type="checkbox" [value]="option.value" [(ngModel)]="option.select" name="cb{{option.text}}">
                         <span class="checkmark-cb"></span>
                     </label>
                 </div>
@@ -48,10 +47,20 @@
                         <option *ngFor="let option of conditions[m].set;" [value]="option.value">{{option.text}}</option>
                     </select>
                 </div>
-                <button type="button" class="btn btn-info" (click)="check()">
+            </form>
+            <hr/>
+        </div>
+        <div class="row search-btn-area">
+            <div class="col-xs-6">
+                <button type="button" class="btn btn-default" (click)="addCondition()">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+            </div>
+            <div class="col-xs-6 text-right">
+                <button type="button" class="btn btn-info" (click)="search()">
                     <span class="glyphicon glyphicon-search"></span> Search
                 </button>
-            </form>
+            </div>
         </div>
     </div>
 </div>

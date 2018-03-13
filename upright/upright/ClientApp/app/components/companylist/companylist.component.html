@@ -1,6 +1,6 @@
 ﻿<h3>Company List</h3>
 
-<search-area [module]="'company'" [fields]="fields" [message]="'Click company to get further information.'"></search-area>
+<search-area [module]="'company'" [fields]="fields" [message]="'Click company to get further information.'" (result)="getSearchResult($event)"></search-area>
 
 <p *ngIf="!companyList ; else dataBlock">
     <em *ngIf="!hasError">Loading...</em>

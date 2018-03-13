@@ -68,7 +68,7 @@ export class ContactComponent {
 
     saveContact() {
         this.globals.loading(true);
-        this.http.post(this.baseUrl + 'api/business/SaveContact', this.newContact).subscribe(result => {
+        this.http.post(`${this.baseUrl}api/business/SaveContact`, this.newContact).subscribe(result => {
             if (result.ok) {
                 console.log('data saved');
             }
@@ -86,7 +86,7 @@ export class ContactComponent {
 
     getContact() {
         this.globals.loading(true);
-        this.http.get(this.baseUrl + 'api/business/GetContact?contactid=' + this.contactId).subscribe(result => {
+        this.http.get(`${this.baseUrl}api/business/GetContact?contactid=${this.contactId}`).subscribe(result => {
             if (result.ok) {
                 this.oldContact = result.json() as IContactModel;
                 this.newContact = {...this.oldContact};
@@ -101,7 +101,7 @@ export class ContactComponent {
     }
 
     getCompanySelect() {
-        this.http.get(this.baseUrl + 'api/business/GetCompanySelect').subscribe(result => {
+        this.http.get(`${this.baseUrl}api/business/GetCompanySelect`).subscribe(result => {
             if (result.ok) {
                 this.companySelect = result.json() as ICompanySelectModel[];
                 this.hasError = '';

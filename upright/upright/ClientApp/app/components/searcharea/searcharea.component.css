@@ -6,6 +6,15 @@
     box-shadow: 0 1px 1px rgba(0,0,0,.05);
 }
 
+.search-btn-area {
+    margin: 10px 15px;
+}
+
+hr {
+    border-top: 1px solid rgb(255, 255, 255);
+    margin: 10px 15px;
+}
+
 .form-inline {
     margin: 15px;
 }

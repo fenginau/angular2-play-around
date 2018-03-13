@@ -61,6 +61,10 @@ export class CompanyListComponent {
         this.globals.loading(false);
     }
 
+    getSearchResult(result: any) {
+        console.log(result);
+    }
+
     viewDetail(companyId: number) {
         this.globals.goto(`company/${companyId}`, {});
     }

@@ -113,6 +113,13 @@ namespace Upright.Controllers
             }
             return StatusCode(500);
         }
+
+        [HttpPost("[action]")]
+        public IActionResult Search(string module, [FromBody] List<SearchParamModel> searchParamList)
+        {
+            return new ObjectResult(searchParamList);
+            return StatusCode(500);
+        }
         #endregion
     }
 }
