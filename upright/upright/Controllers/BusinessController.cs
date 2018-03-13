@@ -114,12 +114,31 @@ namespace Upright.Controllers
             return StatusCode(500);
         }
 
+
+        #endregion
+
+        #region search
+
         [HttpPost("[action]")]
         public IActionResult Search(string module, [FromBody] List<SearchParamModel> searchParamList)
         {
+            switch (module.ToUpper())
+            {
+                case "COMPANY":
+                    CompanyRepo.Search(searchParamList);
+                    break;
+                case "CONTACT":
+                    break;
+                case "TRADE":
+                    break;
+                case "PRODUCT":
+                    break;
+
+            }
             return new ObjectResult(searchParamList);
             return StatusCode(500);
         }
+
         #endregion
     }
 }

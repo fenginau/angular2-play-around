@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using upright.DBContext;
@@ -106,6 +107,64 @@ namespace upright.Repos
                 Logger.Info("Company - GetCompanyCount");
                 Logger.Error(e);
                 return -1;
+            }
+        }
+
+        public static List<CompanyModel> Search(List<SearchParamModel> searchParams)
+        {
+            try
+            {
+                var dic = new Dictionary<string, string>
+                {
+                    { "NAME", "COMPANY_NAME" },
+                    { "ADDRESS", "COMPANY_ADDRESS" },
+                    { "EMAIL", "COMPANY_EMAIL" },
+                    { "PHONE", "COMPANY_PHONE1" },
+                    { "MOBILE", "COMPANY_PHONE2" },
+                    { "ABN", "COMPANY_ABN" },
+                    { "ACN", "COMPANY_ACN" }
+                };
+
+                using (var context = new BusinessContext())
+                {
+                    var condition = new StringBuilder();
+                    var condStr = new StringBuilder();
+                    condition.AppendLine("WHERE 1 = 1");
+                    searchParams.ForEach(s =>
+                    {
+                        var column = dic[s.Key.ToUpper()];
+                        switch (s.Key.ToUpper())
+                        {
+                            case "NAME":
+                            case "ADDRESS":
+                            case "EMAIL":
+                            case "PHONE":
+                            case "MOBILE":
+                            case "ABN":
+                            case "ACN":
+                                var valueSet = s.Value.Split(',');
+                                foreach (var value in valueSet)
+                                {
+                                    condStr.Append(condStr.Length > 0 ? " OR " : "(");
+
+                                    condStr.Append($"{column} like '%{value}%'");
+                                }
+                                condStr.Append(")");
+                                break;
+                        }
+
+                        condition.AppendLine($"AND {condStr}");
+                    });
+                    Logger.Info($"SELECT * FROM UR_COMPANY {condition}");
+                    var companyList = context.Company.FromSql($"SELECT * FROM UR_COMPANY {condition}").ToList();
+                    return companyList;
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Info("Company - Search");
+                Logger.Error(e);
+                return null;
             }
         }
     }
