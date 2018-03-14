@@ -1,7 +1,8 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import { Http } from '@angular/http';
-import { Globals } from "../../utils/globals";
-import { IContactModel } from "../../utils/models";
+import { Globals } from '../../utils/globals';
+import { IContactModel, ISearchModel, ICompanySelectModel, IValueTextModel } from '../../utils/models';
+import { SearchControl } from '../../utils/enum';
 
 @Component({
     selector: 'contact-list',
@@ -10,16 +11,29 @@ import { IContactModel } from "../../utils/models";
     providers: [Globals]
 })
 export class ContactListComponent {
+    @Input()
+    inView: boolean = false;
+    @Input()
+    company: number;
     contactList: IContactModel[];
     hasError: string;
     count: number = 0;
     perPage: number = 20;
-    fields: string[] = ['All', 'Name', 'Address', 'Email', 'Phone'];
+    isSearch: boolean = false;
+    currentPage: number = 0;
+    companySet: IValueTextModel[];
+    fields: ISearchModel[] = [
+        { field: 'Name', control: SearchControl.Input, value: '', set: null },
+        { field: 'Company', control: this.inView ? SearchControl.Unchangable : SearchControl.Dropdown, value: this.inView ? this.company : '', set: this.companySet },
+        { field: 'Address', control: SearchControl.Input, value: '', set: null },
+        { field: 'Email', control: SearchControl.Input, value: '', set: null },
+        { field: 'Phone', control: SearchControl.Input, value: '', set: null },
+        { field: 'Mobile', control: SearchControl.Input, value: '', set: null }];
 
     constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string, private globals: Globals) { }
 
-    getAllContact(index: number) {
-        this.http.get(`${this.baseUrl}api/business/GetAllContact?pp=${this.perPage}&page=${index}`).subscribe(result => {
+    getAllContact() {
+        this.http.get(`${this.baseUrl}api/business/GetAllContact?pp=${this.perPage}&page=${this.currentPage}`).subscribe(result => {
             if (result.ok) {
                 this.contactList = result.json() as IContactModel[];
             }
@@ -50,7 +64,35 @@ export class ContactListComponent {
         this.globals.goto(`contact/${contactId}`, {});
     }
 
+    getSearchResult(result: any) {
+        this.isSearch = true;
+        this.count = result.count;
+        this.contactList = result.result as IContactModel[];
+    }
+
+    onPageChange(page: number) {
+        this.currentPage = page;
+        if (!this.isSearch) {
+            this.getAllContact();
+        }
+    }
+
+    getCompanySelect() {
+        this.http.get(`${this.baseUrl}api/business/GetCompanySelect`).subscribe(result => {
+            if (result.ok) {
+                let companySelect = result.json() as ICompanySelectModel[];
+                this.fields[1].set = companySelect.map(c => ({ value: c.companyId, text: c.companyName }));
+                this.hasError = '';
+            }
+        }, error => this.getError(error));
+    }
+
     ngOnInit() {
-        this.getCount();
+        if (!this.inView) {
+            this.getCount();
+            this.getCompanySelect();
+        } else {
+
+        }
     }
 }

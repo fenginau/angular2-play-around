@@ -1,9 +1,8 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import { Http } from '@angular/http';
 import { Globals } from '../../utils/globals';
-import { ICompanyModel, ISearchModel, IValueTextModel, ISearchReturnModel } from '../../utils/models';
+import { ICompanyModel, ISearchModel } from '../../utils/models';
 import { SearchControl } from '../../utils/enum';
-
 
 @Component({
     selector: 'company-list',
@@ -12,8 +11,10 @@ import { SearchControl } from '../../utils/enum';
     providers: [Globals]
 })
 export class CompanyListComponent {
+    @Input()
+    inView: boolean = false;
     companyList: ICompanyModel[];
-    hasError: string = '';
+    hasError: string;
     count: number = 0;
     perPage: number = 20;
     isSearch: boolean = false;
@@ -57,17 +58,14 @@ export class CompanyListComponent {
         this.globals.loading(false);
     }
 
+    viewDetail(companyId: number) {
+        this.globals.goto(`company/${companyId}`, {});
+    }
+
     getSearchResult(result: any) {
         this.isSearch = true;
         this.count = result.count;
-        console.log(result.result);
-
         this.companyList = result.result as ICompanyModel[];
-        console.log(this.companyList);
-    }
-
-    viewDetail(companyId: number) {
-        this.globals.goto(`company/${companyId}`, {});
     }
 
     onPageChange(page: number) {

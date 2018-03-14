@@ -20,6 +20,8 @@ export class SearchareaComponent {
     page: number;
     @Input()
     pp: number;
+    @Input()
+    inView: boolean;
     @Output()
     result: EventEmitter<ISearchReturnModel|null> = new EventEmitter<ISearchReturnModel|null>();
 
@@ -108,7 +110,6 @@ export class SearchareaComponent {
                 break;
             }
         });
-        console.log(this.searchParams);
     }
 
     // perform the search
@@ -142,10 +143,19 @@ export class SearchareaComponent {
             || (ppChange != undefined && ppChange.currentValue != ppChange.previousValue))
             && this.isSearch) {
             this.getResult();
-        } 
+        }
 
-        if (condChange != undefined && condChange.currentValue != condChange.previousValue) {
-            this.conditions = [{ ...this.fields[0] }];
+        if (condChange != undefined && condChange.currentValue !== condChange.previousValue) {
+            if (this.inView) {
+                for (let i = 0; i < this.fields.length; i++) {
+                    if (this.fields[i].control !== SearchControl.Unchangable) {
+                        this.conditions = [{ ...this.fields[i] }];
+                        break;
+                    }
+                }
+            } else {
+                this.conditions = [{ ...this.fields[0] }];
+            }
         }
     }
 

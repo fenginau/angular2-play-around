@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using upright.DBContext;
@@ -91,5 +92,66 @@ namespace upright.Repos
                 return -1;
             }
         }
+
+        public static dynamic Search(List<SearchParamModel> searchParams, int pp, int page)
+        {
+            try
+            {
+                var dic = new Dictionary<string, string>
+                {
+                    { "NAME", "C.CONTACT_NAME" },
+                    { "ADDRESS", "C.CONTACT_ADDRESS" },
+                    { "EMAIL", "C.CONTACT_EMAIL" },
+                    { "PHONE", "C.CONTACT_PHONE1" },
+                    { "MOBILE", "C.CONTACT_PHONE2" },
+                    { "COMPANY", "C.COMPANY_ID" }
+                };
+
+                using (var context = new BusinessContext())
+                {
+                    var condition = new StringBuilder();
+                    StringBuilder condStr;
+                    condition.AppendLine("WHERE 1 = 1");
+                    searchParams.ForEach(s =>
+                    {
+                        condStr = new StringBuilder();
+                        var column = dic[s.Key.ToUpper()];
+                        switch (s.Key.ToUpper())
+                        {
+                            case "NAME":
+                            case "ADDRESS":
+                            case "EMAIL":
+                            case "PHONE":
+                            case "MOBILE":
+                                var valueSet = s.Value.Split(',');
+                                foreach (var value in valueSet)
+                                {
+                                    condStr.Append(condStr.Length > 0 ? " OR " : "(");
+
+                                    condStr.Append($"{column} LIKE '%{value}%'");
+                                }
+                                condStr.Append(")");
+                                break;
+                            case "COMPANY":
+                                condStr.Append($"{column} IN ({s.Value})");
+                                break;
+                        }
+
+                        condition.AppendLine($"AND {condStr}");
+                    });
+                    var sql = $"SELECT C.*, CO.COMPANY_NAME FROM UR_CONTACT C LEFT JOIN UR_COMPANY CO ON C.COMPANY_ID = CO.COMPANY_ID {condition}";
+                    var count = context.ContactView.FromSql(sql).Count();
+                    var contactList = context.ContactView.FromSql(sql).Skip(pp * (page - 1)).Take(pp).ToList();
+                    return new { count, result = contactList };
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Info("Contact - Search");
+                Logger.Error(e);
+                return null;
+            }
+        }
+
     }
 }

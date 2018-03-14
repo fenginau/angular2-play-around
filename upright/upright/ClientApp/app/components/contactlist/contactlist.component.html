@@ -1,7 +1,6 @@
 ﻿<h1>Contact List</h1>
-
-<!--<search-area [module]="'contact'" [fields]="fields" [message]="'Click contact to get further information.'"></search-area>-->
-
+<search-area [module]="'contact'" [fields]="fields" [message]="'Click contact to get further information.'"
+             [page]="currentPage" [pp]="perPage" [inView]="inView" (result)="getSearchResult($event)"></search-area>
 <p *ngIf="!contactList ; else dataBlock">
     <em *ngIf="!hasError">Loading...</em>
     <em *ngIf="hasError">{{hasError}}</em>
@@ -26,4 +25,4 @@
         </tbody>
     </table>
 </ng-template>
-<pagination [count]="count" [maxPage]="7" (current)="getAllContact($event)" (pp)="ppChange($event)"></pagination>
+<pagination [count]="count" [maxPage]="7" (current)="onPageChange($event)" (pp)="ppChange($event)"></pagination>

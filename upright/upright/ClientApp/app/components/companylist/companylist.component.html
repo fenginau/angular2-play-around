@@ -1,13 +1,10 @@
 ﻿<h3>Company List</h3>
-
 <search-area [module]="'company'" [fields]="fields" [message]="'Click company to get further information.'" 
-             [page]="currentPage" [pp]="perPage" (result)="getSearchResult($event)"></search-area>
-
+             [page]="currentPage" [pp]="perPage" [inView]="inView" (result)="getSearchResult($event)"></search-area>
 <p *ngIf="!companyList ; else dataBlock">
     <em *ngIf="!hasError">Loading...</em>
     <em *ngIf="hasError">{{hasError}}</em>
 </p>
-
 <ng-template #dataBlock>
     <table class="table">
         <thead>

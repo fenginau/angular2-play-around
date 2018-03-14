@@ -36,7 +36,7 @@ export interface ISearchModel {
     field: string;
     control: number;
     value: any;
-    set?: IValueTextModel[]|null;
+    set?: IValueTextModel[] | null;
 }
 
 export interface IValueTextModel {

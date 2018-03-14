@@ -125,13 +125,18 @@ namespace Upright.Controllers
             switch (module.ToUpper())
             {
                 case "COMPANY":
-                    var result = CompanyRepo.Search(searchParamList, pp, page);
-                    if (result != null)
+                    var companyList = CompanyRepo.Search(searchParamList, pp, page);
+                    if (companyList != null)
                     {
-                        return new ObjectResult(result); ;
+                        return new ObjectResult(companyList); ;
                     }
                     break;
                 case "CONTACT":
+                    var contactList = ContactRepo.Search(searchParamList, pp, page);
+                    if (contactList != null)
+                    {
+                        return new ObjectResult(contactList); ;
+                    }
                     break;
                 case "TRADE":
                     break;

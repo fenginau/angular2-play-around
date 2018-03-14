@@ -148,7 +148,7 @@ namespace upright.Repos
                                 {
                                     condStr.Append(condStr.Length > 0 ? " OR " : "(");
 
-                                    condStr.Append($"{column} like '%{value}%'");
+                                    condStr.Append($"{column} LIKE '%{value}%'");
                                 }
                                 condStr.Append(")");
                                 break;
@@ -157,7 +157,6 @@ namespace upright.Repos
                         condition.AppendLine($"AND {condStr}");
                     });
                     var sql = $"SELECT * FROM UR_COMPANY {condition}";
-                    Logger.Info(sql);
                     var count = context.Company.FromSql(sql).Count();
                     var companyList = context.Company.FromSql(sql).Skip(pp * (page - 1)).Take(pp).ToList();
                     return new { count, result = companyList };
