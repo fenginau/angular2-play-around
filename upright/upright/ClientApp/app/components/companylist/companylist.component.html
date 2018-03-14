@@ -1,6 +1,7 @@
 ﻿<h3>Company List</h3>
 
-<search-area [module]="'company'" [fields]="fields" [message]="'Click company to get further information.'" (result)="getSearchResult($event)"></search-area>
+<search-area [module]="'company'" [fields]="fields" [message]="'Click company to get further information.'" 
+             [page]="currentPage" [pp]="perPage" (result)="getSearchResult($event)"></search-area>
 
 <p *ngIf="!companyList ; else dataBlock">
     <em *ngIf="!hasError">Loading...</em>
@@ -27,4 +28,4 @@
         </tbody>
     </table>
 </ng-template>
-<pagination [count]="count" [maxPage]="7" (current)="getAllCompany($event)" (pp)="ppChange($event)"></pagination>
+<pagination [count]="count" [maxPage]="7" (current)="onPageChange($event)" (pp)="ppChange($event)"></pagination>

@@ -160,7 +160,7 @@ namespace upright.Repos
                     Logger.Info(sql);
                     var count = context.Company.FromSql(sql).Count();
                     var companyList = context.Company.FromSql(sql).Skip(pp * (page - 1)).Take(pp).ToList();
-                    return new { count, companyList };
+                    return new { count, result = companyList };
                 }
             }
             catch (Exception e)

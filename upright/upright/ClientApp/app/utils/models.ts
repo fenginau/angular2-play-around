@@ -49,3 +49,8 @@ export interface ISearchParams {
     key: string;
     value: string;
 }
+
+export interface ISearchReturnModel {
+    count: number;
+    result: any;
+}

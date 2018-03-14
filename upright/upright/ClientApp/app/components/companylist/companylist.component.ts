@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { Http } from '@angular/http';
 import { Globals } from '../../utils/globals';
-import { ICompanyModel, ISearchModel, IValueTextModel } from '../../utils/models';
+import { ICompanyModel, ISearchModel, IValueTextModel, ISearchReturnModel } from '../../utils/models';
 import { SearchControl } from '../../utils/enum';
 
 
@@ -16,6 +16,8 @@ export class CompanyListComponent {
     hasError: string = '';
     count: number = 0;
     perPage: number = 20;
+    isSearch: boolean = false;
+    currentPage: number = 0;
     fields: ISearchModel[] = [
         { field: 'Name', control: SearchControl.Input, value: '', set: null },
         { field: 'Address', control: SearchControl.Input, value: '', set: null },
@@ -27,8 +29,8 @@ export class CompanyListComponent {
 
     constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string, private globals: Globals) { }
     
-    getAllCompany(index: number) {
-        this.http.get(`${this.baseUrl}api/business/GetAllCompany?pp=${this.perPage}&page=${index}`).subscribe(result => {
+    getAllCompany() {
+        this.http.get(`${this.baseUrl}api/business/GetAllCompany?pp=${this.perPage}&page=${this.currentPage}`).subscribe(result => {
             if (result.ok) {
                 this.companyList = result.json() as ICompanyModel[];
             }
@@ -56,12 +58,23 @@ export class CompanyListComponent {
     }
 
     getSearchResult(result: any) {
-        this.companyList = result as ICompanyModel[];
-        console.log(result);
+        this.isSearch = true;
+        this.count = result.count;
+        console.log(result.result);
+
+        this.companyList = result.result as ICompanyModel[];
+        console.log(this.companyList);
     }
 
     viewDetail(companyId: number) {
         this.globals.goto(`company/${companyId}`, {});
+    }
+
+    onPageChange(page: number) {
+        this.currentPage = page;
+        if (!this.isSearch) {
+            this.getAllCompany();
+        }
     }
 
     ngOnInit() {
