@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './components/app/app.component';
+import { FieldFilterPipe } from './utils/pipes';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { SearchareaComponent } from './components/searcharea/searcharea.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
@@ -20,6 +21,7 @@ import { ContactListComponent } from './components/contactlist/contactlist.compo
 @NgModule({
     declarations: [
         AppComponent,
+        FieldFilterPipe,
         CompanyComponent,
         CompanyListComponent,
         NavMenuComponent,

@@ -1,4 +1,4 @@
-import { Component, Input, Inject, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, Input, Inject, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { ISearchModel, ISearchParams, ISearchReturnModel } from '../../utils/models';
 import { SearchControl } from '../../utils/enum';
 import { Globals } from '../../utils/globals';
@@ -52,7 +52,16 @@ export class SearchareaComponent {
 
     // push conditions
     addCondition() {
-        this.conditions.push({ ...this.fields[0] });
+        if (this.inView) {
+            for (let i = 0; i < this.fields.length; i++) {
+                if (this.fields[i].control !== SearchControl.Unchangable) {
+                    this.conditions.push({ ...this.fields[i] });
+                    break;
+                }
+            }
+        } else {
+            this.conditions.push({ ...this.fields[0] });
+        }
     }
 
     buildSearchParams() {

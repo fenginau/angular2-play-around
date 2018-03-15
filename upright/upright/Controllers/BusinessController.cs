@@ -83,6 +83,17 @@ namespace Upright.Controllers
         }
 
         [HttpGet("[action]")]
+        public IActionResult GetCompanyContact(int pp, int page, int company)
+        {
+            var contactList = ContactRepo.GetCompanyContact(pp, page, company);
+            if (contactList != null)
+            {
+                return new ObjectResult(contactList);
+            }
+            return StatusCode(500);
+        }
+
+        [HttpGet("[action]")]
         public IActionResult GetContact(int contactId)
         {
             var contact = ContactRepo.GetContact(contactId);
@@ -104,9 +115,9 @@ namespace Upright.Controllers
         }
 
         [HttpGet("[action]")]
-        public IActionResult GetContactCount()
+        public IActionResult GetContactCount(int company)
         {
-            var count = ContactRepo.GetContactCount();
+            var count = ContactRepo.GetContactCount(company);
             if (count > -1)
             {
                 return new ObjectResult(count);

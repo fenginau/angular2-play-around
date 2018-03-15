@@ -1,4 +1,4 @@
-import { Component, Inject, Input } from '@angular/core';
+import { Component, Inject, Input, SimpleChanges } from '@angular/core';
 import { Http } from '@angular/http';
 import { Globals } from '../../utils/globals';
 import { IContactModel, ISearchModel, ICompanySelectModel, IValueTextModel } from '../../utils/models';
@@ -14,17 +14,17 @@ export class ContactListComponent {
     @Input()
     inView: boolean = false;
     @Input()
-    company: number;
+    company: number = 0;
     contactList: IContactModel[];
     hasError: string;
     count: number = 0;
-    perPage: number = 20;
+    perPage: number = 10;
     isSearch: boolean = false;
     currentPage: number = 0;
     companySet: IValueTextModel[];
     fields: ISearchModel[] = [
         { field: 'Name', control: SearchControl.Input, value: '', set: null },
-        { field: 'Company', control: this.inView ? SearchControl.Unchangable : SearchControl.Dropdown, value: this.inView ? this.company : '', set: this.companySet },
+        { field: 'Company', control: SearchControl.Dropdown, value: this.inView ? this.company : '', set: null },
         { field: 'Address', control: SearchControl.Input, value: '', set: null },
         { field: 'Email', control: SearchControl.Input, value: '', set: null },
         { field: 'Phone', control: SearchControl.Input, value: '', set: null },
@@ -41,9 +41,19 @@ export class ContactListComponent {
         }, error => this.getError(error));
     }
 
+    getCompanyContact() {
+        this.http.get(`${this.baseUrl}api/business/GetCompanyContact?pp=${this.perPage}&page=${this.currentPage}&company=${this.company}`).subscribe(result => {
+            if (result.ok) {
+                this.contactList = result.json() as IContactModel[];
+            }
+            this.globals.loading(false);
+        }, error => this.getError(error));
+    }
+
     getCount() {
         this.globals.loading(true);
-        this.http.get(`${this.baseUrl}api/business/GetContactCount`).subscribe(result => {
+        let url = `${this.baseUrl}api/business/GetContactCount?company=${this.company}`;
+        this.http.get(url).subscribe(result => {
             if (result.ok) {
                 this.count = result.json() as number;
             }
@@ -73,7 +83,11 @@ export class ContactListComponent {
     onPageChange(page: number) {
         this.currentPage = page;
         if (!this.isSearch) {
-            this.getAllContact();
+            if (this.company > 0) {
+                this.getCompanyContact();
+            } else {
+                this.getAllContact();
+            }
         }
     }
 
@@ -88,11 +102,20 @@ export class ContactListComponent {
     }
 
     ngOnInit() {
+        this.getCount();
         if (!this.inView) {
-            this.getCount();
             this.getCompanySelect();
-        } else {
+        }
+    }
 
+    ngOnChanges(changes: SimpleChanges) {
+        const companyChange = changes['company'];
+        if (companyChange != undefined && companyChange.currentValue != companyChange.previousValue) {
+            if (this.company > 0) {
+                this.getCount();
+                this.fields[1].control = SearchControl.Unchangable;
+                this.fields = [...this.fields];
+            }
         }
     }
 }

@@ -16,7 +16,7 @@ export class CompanyListComponent {
     companyList: ICompanyModel[];
     hasError: string;
     count: number = 0;
-    perPage: number = 20;
+    perPage: number = 10;
     isSearch: boolean = false;
     currentPage: number = 0;
     fields: ISearchModel[] = [

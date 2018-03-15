@@ -15,7 +15,7 @@ export class PaginationComponent {
     @Output()
     pp: EventEmitter<number> = new EventEmitter<number>();
 
-    perPage: number = 20;
+    perPage: number = 10;
     index: number = 1;
     pages: number[];
     totalPage: number = 1;
