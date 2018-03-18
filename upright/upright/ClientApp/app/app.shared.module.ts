@@ -42,9 +42,13 @@ import { ContactListComponent } from './components/contactlist/contactlist.compo
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
             { path: 'counter', component: CounterComponent },
-            { path: 'company', component: CompanyListComponent },
-            { path: 'company/:id', component: CompanyComponent },
-            { path: 'contact', component: ContactListComponent },
+            { path: 'companylist', component: CompanyListComponent },
+            {
+                path: 'company/:id', component: CompanyComponent, children: [
+                    { path: 'contact/:company', component: ContactListComponent }
+                ]
+            },
+            { path: 'contactlist', component: ContactListComponent },
             { path: 'contact/:id', component: ContactComponent },
             { path: '**', redirectTo: 'home' }
         ])

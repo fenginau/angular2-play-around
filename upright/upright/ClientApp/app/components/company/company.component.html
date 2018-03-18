@@ -108,7 +108,16 @@
                 </div>
             </div>
         </form>
-        <h3>Contacts</h3>
-        <contact-list [inView]="true" [company]="oldCompany.companyId"></contact-list>
+
+        <ul class="nav nav-tabs module-tab">
+            <li [routerLinkActive]="['active']">
+                <a [routerLink]="['./contact/' + companyId]">
+                    <span class="glyphicon glyphicon-user"></span> Contact
+                </a>
+            </li>
+            <li><a href="#">Product</a></li>
+            <li><a href="#">Trade</a></li>
+        </ul>
+        <router-outlet></router-outlet>
     </ng-template>
 </div>

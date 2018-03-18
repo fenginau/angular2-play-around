@@ -1,8 +1,9 @@
-import { Component, Inject, Input, SimpleChanges } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { Http } from '@angular/http';
 import { Globals } from '../../utils/globals';
 import { IContactModel, ISearchModel, ICompanySelectModel, IValueTextModel } from '../../utils/models';
 import { SearchControl } from '../../utils/enum';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'contact-list',
@@ -11,10 +12,8 @@ import { SearchControl } from '../../utils/enum';
     providers: [Globals]
 })
 export class ContactListComponent {
-    @Input()
-    inView: boolean = false;
-    @Input()
     company: number = 0;
+    inView: boolean = false;
     contactList: IContactModel[];
     hasError: string;
     count: number = 0;
@@ -24,13 +23,25 @@ export class ContactListComponent {
     companySet: IValueTextModel[];
     fields: ISearchModel[] = [
         { field: 'Name', control: SearchControl.Input, value: '', set: null },
-        { field: 'Company', control: SearchControl.Dropdown, value: this.inView ? this.company : '', set: null },
+        { field: 'Company', control: SearchControl.Dropdown, value: '', set: null },
         { field: 'Address', control: SearchControl.Input, value: '', set: null },
         { field: 'Email', control: SearchControl.Input, value: '', set: null },
         { field: 'Phone', control: SearchControl.Input, value: '', set: null },
         { field: 'Mobile', control: SearchControl.Input, value: '', set: null }];
 
-    constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string, private globals: Globals) { }
+    constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string, private globals: Globals, private route: ActivatedRoute) {
+        let company = this.route.snapshot.paramMap.get('company');
+        console.log(company);
+        this.company = Number(company);
+        if (this.company > 0) {
+            this.inView = true;
+            this.fields[1].value = this.company;
+            this.fields[1].control = SearchControl.Unchangable;
+            this.fields = [...this.fields];
+        } else {
+            this.getCompanySelect();
+        }
+    }
 
     getAllContact() {
         this.http.get(`${this.baseUrl}api/business/GetAllContact?pp=${this.perPage}&page=${this.currentPage}`).subscribe(result => {
@@ -52,7 +63,7 @@ export class ContactListComponent {
 
     getCount() {
         this.globals.loading(true);
-        let url = `${this.baseUrl}api/business/GetContactCount?company=${this.company}`;
+        const url = `${this.baseUrl}api/business/GetContactCount?company=${this.company}`;
         this.http.get(url).subscribe(result => {
             if (result.ok) {
                 this.count = result.json() as number;
@@ -94,7 +105,7 @@ export class ContactListComponent {
     getCompanySelect() {
         this.http.get(`${this.baseUrl}api/business/GetCompanySelect`).subscribe(result => {
             if (result.ok) {
-                let companySelect = result.json() as ICompanySelectModel[];
+                const companySelect = result.json() as ICompanySelectModel[];
                 this.fields[1].set = companySelect.map(c => ({ value: c.companyId, text: c.companyName }));
                 this.hasError = '';
             }
@@ -103,19 +114,5 @@ export class ContactListComponent {
 
     ngOnInit() {
         this.getCount();
-        if (!this.inView) {
-            this.getCompanySelect();
-        }
-    }
-
-    ngOnChanges(changes: SimpleChanges) {
-        const companyChange = changes['company'];
-        if (companyChange != undefined && companyChange.currentValue != companyChange.previousValue) {
-            if (this.company > 0) {
-                this.getCount();
-                this.fields[1].control = SearchControl.Unchangable;
-                this.fields = [...this.fields];
-            }
-        }
     }
 }

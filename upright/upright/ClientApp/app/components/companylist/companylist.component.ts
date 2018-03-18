@@ -59,7 +59,7 @@ export class CompanyListComponent {
     }
 
     viewDetail(companyId: number) {
-        this.globals.goto(`company/${companyId}`, {});
+        this.globals.goto(`company/${companyId}/contact/${companyId}`, {});
     }
 
     getSearchResult(result: any) {
