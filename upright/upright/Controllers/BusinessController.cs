@@ -39,9 +39,9 @@ namespace Upright.Controllers
         [HttpPost("[action]")]
         public IActionResult SaveCompany([FromBody] CompanyModel company)
         {
-            if (CompanyRepo.SaveCompany(company))
+            if (CompanyRepo.SaveCompany(company) != null)
             {
-                return Ok();
+                return Ok(company);
             }
             return StatusCode(500);
         }
@@ -107,9 +107,9 @@ namespace Upright.Controllers
         [HttpPost("[action]")]
         public IActionResult SaveContact([FromBody] ContactModel contact)
         {
-            if (ContactRepo.SaveContact(contact))
+            if (ContactRepo.SaveContact(contact) != null)
             {
-                return Ok();
+                return Ok(contact);
             }
             return StatusCode(500);
         }
@@ -165,9 +165,9 @@ namespace Upright.Controllers
         [HttpPost("[action]")]
         public IActionResult SaveProduct([FromBody] ProductModel product)
         {
-            if (ProductRepo.SaveProduct(product))
+            if (ProductRepo.SaveProduct(product) != null)
             {
-                return Ok();
+                return Ok(product);
             }
             return StatusCode(500);
         }

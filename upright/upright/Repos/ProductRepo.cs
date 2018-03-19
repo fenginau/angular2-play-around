@@ -77,7 +77,7 @@ namespace upright.Repos
             }
         }
 
-        public static bool SaveProduct(ProductModel product)
+        public static ProductModel SaveProduct(ProductModel product)
         {
             try
             {
@@ -92,14 +92,14 @@ namespace upright.Repos
                         context.Product.Add(product);
                     }
                     context.SaveChanges();
-                    return true;
+                    return product;
                 }
             }
             catch (Exception e)
             {
                 Logger.Info("Product - SaveProduct");
                 Logger.Error(e);
-                return false;
+                return null;
             }
         }
 

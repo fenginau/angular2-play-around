@@ -77,7 +77,7 @@ namespace upright.Repos
             }
         }
 
-        public static bool SaveContact(ContactModel contact)
+        public static ContactModel SaveContact(ContactModel contact)
         {
             try
             {
@@ -92,14 +92,14 @@ namespace upright.Repos
                         context.Contact.Add(contact);
                     }
                     context.SaveChanges();
-                    return true;
+                    return contact;
                 }
             }
             catch (Exception e)
             {
                 Logger.Info("Contact - SaveContact");
                 Logger.Error(e);
-                return false;
+                return null;
             }
         }
 

@@ -43,7 +43,17 @@ export class CompanyComponent {
         private http: Http,
         private globals: Globals,
         @Inject('BASE_URL') private baseUrl: string
-    ) { }
+    ) {
+        route.params.subscribe(val => {
+            let id = this.route.snapshot.paramMap.get('id');
+            this.companyId = Number(id);
+            if (this.companyId > 0) {
+                this.getCompany();
+            } else {
+                this.setEdit();
+            }
+        });
+    }
 
     setEdit() {
         this.isEdit = true;
@@ -59,6 +69,12 @@ export class CompanyComponent {
         this.globals.loading(true);
         this.http.post(this.baseUrl + 'api/business/SaveCompany', this.newCompany).subscribe(result => {
             if (result.ok) {
+                const company = result.json() as ICompanyModel;
+                if (this.oldCompany.companyId === 0) {
+                    this.globals.goto(`/company/${company.companyId}/contact/${company.companyId}`, {});
+                } else {
+                    this.oldCompany = { ...company };
+                }
                 console.log('data saved');
             }
             this.isEdit = false;
@@ -69,8 +85,6 @@ export class CompanyComponent {
             this.isEdit = false;
             this.globals.loading(false);
         });
-
-        this.oldCompany = {...this.newCompany};
     }
 
     getCompany() {
@@ -97,10 +111,6 @@ export class CompanyComponent {
     }
 
     ngOnInit() {
-        let id = this.route.snapshot.paramMap.get('id');
-        this.companyId = Number(id);
-        if (this.companyId > 0) {
-            this.getCompany();
-        }
+        
     }
 }

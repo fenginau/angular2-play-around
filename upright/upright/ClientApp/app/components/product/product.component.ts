@@ -44,7 +44,17 @@ export class ProductComponent {
         private http: Http,
         private globals: Globals,
         @Inject('BASE_URL') private baseUrl: string
-    ) { }
+    ) {
+        route.params.subscribe(val => {
+            let id = this.route.snapshot.paramMap.get('id');
+            this.productId = Number(id);
+            if (this.productId > 0) {
+                this.getProduct();
+            } else {
+                this.setEdit();
+            }
+        });
+    }
 
     setEdit() {
         this.newProduct = { ...this.oldProduct };
@@ -66,6 +76,12 @@ export class ProductComponent {
         this.globals.loading(true);
         this.http.post(`${this.baseUrl}api/business/SaveProduct`, this.newProduct).subscribe(result => {
             if (result.ok) {
+                const product = result.json() as IProductModel;
+                if (this.oldProduct.productId === 0) {
+                    this.globals.goto(`/product/${product.productId}`, {});
+                } else {
+                    this.oldProduct = { ...product };
+                }
                 console.log('data saved');
             }
             this.isEdit = false;
@@ -116,11 +132,6 @@ export class ProductComponent {
     }
 
     ngOnInit() {
-        let id = this.route.snapshot.paramMap.get('id');
-        this.productId = Number(id);
-        if (this.productId > 0) {
-            this.getProduct();
-            this.getCompanySelect();
-        }
+        this.getCompanySelect();
     }
 }

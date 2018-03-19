@@ -48,7 +48,7 @@ namespace upright.Repos
             }
         }
 
-        public static bool SaveCompany(CompanyModel company)
+        public static CompanyModel SaveCompany(CompanyModel company)
         {
             try
             {
@@ -63,14 +63,14 @@ namespace upright.Repos
                         context.Company.Add(company);
                     }
                     context.SaveChanges();
-                    return true;
+                    return company;
                 }
             }
             catch (Exception e)
             {
                 Logger.Info("Company - SaveCompany");
                 Logger.Error(e);
-                return false;
+                return null;
             }
         }
 

@@ -48,7 +48,17 @@ export class ContactComponent {
         private http: Http,
         private globals: Globals,
         @Inject('BASE_URL') private baseUrl: string
-    ) { }
+    ) {
+        route.params.subscribe(val => {
+            let id = this.route.snapshot.paramMap.get('id');
+            this.contactId = Number(id);
+            if (this.contactId > 0) {
+                this.getContact();
+            } else {
+                this.setEdit();
+            }
+        });
+    }
 
     setEdit() {
         this.newContact = { ...this.oldContact };
@@ -70,6 +80,12 @@ export class ContactComponent {
         this.globals.loading(true);
         this.http.post(`${this.baseUrl}api/business/SaveContact`, this.newContact).subscribe(result => {
             if (result.ok) {
+                const contact = result.json() as IContactModel;
+                if (this.oldContact.contactId === 0) {
+                    this.globals.goto(`/contact/${contact.contactId}`, {});
+                } else {
+                    this.oldContact = { ...contact };
+                }
                 console.log('data saved');
             }
             this.isEdit = false;
@@ -120,11 +136,6 @@ export class ContactComponent {
     }
 
     ngOnInit() {
-        let id = this.route.snapshot.paramMap.get('id');
-        this.contactId = Number(id);
-        if (this.contactId > 0) {
-            this.getContact();
-            this.getCompanySelect();
-        }
+        this.getCompanySelect();
     }
 }
