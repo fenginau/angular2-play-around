@@ -11,8 +11,10 @@
 
 export interface IProductModel {
     productId: number;
+    productName: string;
     productDesc: string;
-    productMaker: string;
+    companyId: number;
+    companyName: string;
 }
 
 export interface IContactModel {

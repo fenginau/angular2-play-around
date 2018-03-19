@@ -115,7 +115,11 @@
                     <span class="glyphicon glyphicon-user"></span> Contact
                 </a>
             </li>
-            <li><a href="#">Product</a></li>
+            <li [routerLinkActive]="['active']">
+                <a [routerLink]="['./product/' + companyId]">
+                    <span class="glyphicon glyphicon-tag"></span> Product
+                </a>
+            </li>
             <li><a href="#">Trade</a></li>
         </ul>
         <router-outlet></router-outlet>

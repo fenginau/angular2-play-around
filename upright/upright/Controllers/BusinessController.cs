@@ -128,6 +128,62 @@ namespace Upright.Controllers
 
         #endregion
 
+        #region product
+        [HttpGet("[action]")]
+        public IActionResult GetAllProduct(int pp, int page)
+        {
+            var productList = ProductRepo.GetAllProduct(pp, page);
+            if (productList != null)
+            {
+                return new ObjectResult(productList);
+            }
+            return StatusCode(500);
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult GetCompanyProduct(int pp, int page, int company)
+        {
+            var productList = ProductRepo.GetCompanyProduct(pp, page, company);
+            if (productList != null)
+            {
+                return new ObjectResult(productList);
+            }
+            return StatusCode(500);
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult GetProduct(int productId)
+        {
+            var product = ProductRepo.GetProduct(productId);
+            if (product != null)
+            {
+                return new ObjectResult(product);
+            }
+            return StatusCode(500);
+        }
+
+        [HttpPost("[action]")]
+        public IActionResult SaveProduct([FromBody] ProductModel product)
+        {
+            if (ProductRepo.SaveProduct(product))
+            {
+                return Ok();
+            }
+            return StatusCode(500);
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult GetProductCount(int company)
+        {
+            var count = ProductRepo.GetProductCount(company);
+            if (count > -1)
+            {
+                return new ObjectResult(count);
+            }
+            return StatusCode(500);
+        }
+        #endregion
+
         #region search
 
         [HttpPost("[action]")]
@@ -152,6 +208,11 @@ namespace Upright.Controllers
                 case "TRADE":
                     break;
                 case "PRODUCT":
+                    var productList = ProductRepo.Search(searchParamList, pp, page);
+                    if (productList != null)
+                    {
+                        return new ObjectResult(productList); ;
+                    }
                     break;
 
             }
@@ -159,5 +220,6 @@ namespace Upright.Controllers
         }
 
         #endregion
+
     }
 }

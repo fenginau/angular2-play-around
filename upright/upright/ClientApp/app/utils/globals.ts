@@ -20,6 +20,35 @@ export class Globals {
         }
     }
 
+    truncate(value: string, length: number, breakword: boolean) {
+        if (value == undefined || value == null) return '';
+        if (breakword == undefined) breakword = true;
+        if (value.length > length) {
+            if (breakword) {
+                return value.substring(0, length - 3) + '...';
+            } else {
+                let wordList = value.split(' ');
+                let newList: string[] = [];
+                let sLength = 0;
+                for (var i = 0, len = wordList.length; i < len; i++) {
+                    sLength = sLength + wordList[i].length;
+                    if (sLength < length) {
+                        newList.push(wordList[i]);
+                    } else {
+                        break;
+                    }
+                }
+                return newList.join(' ') + '...';
+            }
+        } else {
+            return value;
+        }
+    }
+
+    convertChangeLine(value: string) {
+        return value.replace(/\r\n/g, '<br>').replace(/[\r\n]/g, '<br>');
+    }
+
     goto(path: string, param: object) {
         this.router.navigate([path, param]);
     }

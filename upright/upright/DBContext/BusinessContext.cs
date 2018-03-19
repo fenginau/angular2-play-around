@@ -13,6 +13,9 @@ namespace upright.DBContext
 
         public virtual DbSet<ContactModel> Contact { get; set; }
         public virtual DbSet<ContactViewModel> ContactView { get; set; }
+        
+        public virtual DbSet<ProductModel> Product { get; set; }
+        public virtual DbSet<ProductViewModel> ProductView { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

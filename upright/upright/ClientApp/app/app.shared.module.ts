@@ -15,24 +15,25 @@ import { CompanyComponent } from './components/company/company.component';
 import { CompanyListComponent } from './components/companylist/companylist.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { ContactListComponent } from './components/contactlist/contactlist.component';
-//import { HighlightDirective } from './utils/directives';
+import { ProductComponent } from './components/product/product.component';
+import { ProductListComponent } from './components/productlist/productlist.component';
 
 
 @NgModule({
     declarations: [
         AppComponent,
         FieldFilterPipe,
-        CompanyComponent,
-        CompanyListComponent,
         NavMenuComponent,
         SearchareaComponent,
         PaginationComponent,
         CounterComponent,
         HomeComponent,
+        CompanyComponent,
+        CompanyListComponent,
         ContactComponent,
         ContactListComponent,
-        //directives
-        //HighlightDirective
+        ProductComponent,
+        ProductListComponent
     ],
     imports: [
         CommonModule,
@@ -45,11 +46,14 @@ import { ContactListComponent } from './components/contactlist/contactlist.compo
             { path: 'companylist', component: CompanyListComponent },
             {
                 path: 'company/:id', component: CompanyComponent, children: [
-                    { path: 'contact/:company', component: ContactListComponent }
+                    { path: 'contact/:company', component: ContactListComponent },
+                    { path: 'product/:company', component: ProductListComponent }
                 ]
             },
             { path: 'contactlist', component: ContactListComponent },
             { path: 'contact/:id', component: ContactComponent },
+            { path: 'productlist', component: ProductListComponent },
+            { path: 'product/:id', component: ProductComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ]
