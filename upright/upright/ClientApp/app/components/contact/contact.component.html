@@ -14,7 +14,7 @@
             </div>
             <div class="form-group">
                 <label for="selectContactCompany">Company</label>
-                <select class="form-control" id="selectContactCompany" [(ngModel)]="newContact.companyId" name="company">
+                <select class="form-control" id="selectContactCompany" [(ngModel)]="newContact.companyId" name="company" [disabled]="companyLock">
                     <option value="0"></option>
                     <option *ngFor="let company of companySelect" [value]="company.companyId">{{company.companyName}}</option>
                 </select>
@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="form-group has-feedback" [ngClass]="!isValid(mobile) ? 'has-error' : ''">
-                <label for="inputContactMobile" class="control-label">Phone</label>
+                <label for="inputContactMobile" class="control-label">Mobile</label>
                 <input type="text" class="form-control" id="inputContactMobile" pattern="^[\+]?[_0-9\s]{1,}$"
                        [(ngModel)]="newContact.contactPhone2" name="mobile" #mobile="ngModel">
                 <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"

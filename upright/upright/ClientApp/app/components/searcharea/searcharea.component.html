@@ -3,15 +3,16 @@
         <div class="col-xs-9">
             <p>{{message}}</p>
         </div>
-        <div class="col-xs-3 text-right">
-            <button type="button" class="btn btn-primary btn-xs" data-toggle="collapse" data-target="#searchArea">
+        <div class="col-xs-3 text-right" *ngIf="!expand">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="collapse" data-target="#searchArea" (click)="toggled = !toggled">
                 Search&nbsp;
-                <span class="glyphicon glyphicon-triangle-bottom"></span>
+                <span class="glyphicon glyphicon-triangle-bottom" *ngIf="toggled"></span>
+                <span class="glyphicon glyphicon-triangle-top" *ngIf="!toggled"></span>
             </button>
         </div>
     </div>
 
-    <div id="searchArea" class="collapse search-field">
+    <div id="searchArea" class="collapse search-field" [ngClass]="{'in': expand}">
         <div *ngFor="let condition of conditions; let m = index">
             <form class="form-inline">
                 <div class="form-group custom-comtainer">

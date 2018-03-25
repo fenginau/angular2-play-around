@@ -112,6 +112,10 @@ export class ContactListComponent {
         }, error => this.getError(error));
     }
 
+    add() {
+        this.globals.goto('contact/0', {company: this.company});
+    }
+
     ngOnInit() {
         this.getCount();
     }

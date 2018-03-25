@@ -6,20 +6,23 @@
     <em *ngIf="hasError">{{hasError}}</em>
 </p>
 <ng-template #dataBlock>
+    <div class="row container">
+        <button type="button" class="btn btn-primary" (click)="add()">New Product</button>
+    </div>
     <table class="table">
         <thead>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Company</th>
-        </tr>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Company</th>
+            </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let product of productList" (click)="viewDetail(product.productId)">
-            <td>{{ product.productName }}</td>
-            <td>{{ globals.truncate(product.productDesc, 50, false) }}</td>
-            <td>{{ product.companyName }}</td>
-        </tr>
+            <tr *ngFor="let product of productList" (click)="viewDetail(product.productId)">
+                <td>{{ product.productName }}</td>
+                <td>{{ globals.truncate(product.productDesc, 50, false) }}</td>
+                <td>{{ product.companyName }}</td>
+            </tr>
         </tbody>
     </table>
 </ng-template>

@@ -19,7 +19,7 @@
             </div>
             <div class="form-group">
                 <label for="selectProductCompany">Company</label>
-                <select class="form-control" id="selectProductCompany" [(ngModel)]="newProduct.companyId" name="company">
+                <select class="form-control" id="selectProductCompany" [(ngModel)]="newProduct.companyId" name="company" [disabled]="companyLock">
                     <option value="0"></option>
                     <option *ngFor="let company of companySelect" [value]="company.companyId">{{company.companyName}}</option>
                 </select>

@@ -13,8 +13,8 @@ import { NgForm, NgModel } from '@angular/forms';
     providers: [Globals]
 })
 export class CompanyComponent {
-    public companyId: number;
-    public oldCompany: ICompanyModel = {
+    companyId: number;
+    oldCompany: ICompanyModel = {
         companyId: 0,
         companyName: '',
         companyAddress: '',
@@ -24,7 +24,7 @@ export class CompanyComponent {
         companyAbn: '',
         companyAcn: ''
     };
-    public newCompany: ICompanyModel = {
+    newCompany: ICompanyModel = {
         companyId: 0,
         companyName: '',
         companyAddress: '',
@@ -34,9 +34,9 @@ export class CompanyComponent {
         companyAbn: '',
         companyAcn: ''
     };
-    public hasError: string;
-    public isEdit: boolean = false;
-    public processing: boolean = false;
+    hasError: string;
+    isEdit: boolean = false;
+    processing: boolean = false;
     constructor(
         private route: ActivatedRoute,
         private location: Location,
@@ -108,6 +108,10 @@ export class CompanyComponent {
             return false;
         }
         return true;
+    }
+
+    gotoTrade() {
+        this.globals.goto('trade/0', { company: this.companyId });
     }
 
     ngOnInit() {

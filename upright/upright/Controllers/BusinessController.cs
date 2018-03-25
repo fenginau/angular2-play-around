@@ -68,6 +68,20 @@ namespace Upright.Controllers
             return StatusCode(500);
         }
 
+        [HttpGet("[action]")]
+        public IActionResult GetCompanyName(int companyId)
+        {
+            try
+            {
+                var name = CompanyRepo.GetCompanyName(companyId);
+                return new ObjectResult(name);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500);
+            }
+        }
+
         #endregion
 
         #region contact

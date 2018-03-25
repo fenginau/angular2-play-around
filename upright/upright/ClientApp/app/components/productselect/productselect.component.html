@@ -1,0 +1,59 @@
+﻿<h4>Product to Add</h4>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Company</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let product of products; let i = index">
+        <td>{{ product.productName }}</td>
+        <td>{{ globals.truncate(product.productDesc, 50, false) }}</td>
+        <td>{{ product.companyName }}</td>
+        <td>
+            <button type="button" class="btn btn-default" (click)="moveFromList(i)">
+                <span class="glyphicon glyphicon-minus"></span>
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="row container">
+    <button type="button" class="btn btn-primary" (click)="done()" [disabled]="products.length < 1">Done</button>
+</div>
+<div class="inview-search">
+    <search-area [module]="'product'" [fields]="fields" [message]="'Search product and add them to list.'"
+                 [page]="currentPage" [pp]="perPage" [inView]="inView" (result)="getSearchResult($event)" [expand]="true"></search-area>
+    <p *ngIf="hasError ; else dataBlock">
+        {{hasError}}
+    </p>
+    <ng-template #dataBlock>
+        <h4>Search Result</h4>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Company</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let product of productList; let i = index">
+                <td>{{ product.productName }}</td>
+                <td>{{ globals.truncate(product.productDesc, 50, false) }}</td>
+                <td>{{ product.companyName }}</td>
+                <td>
+                    <button type="button" class="btn btn-default" (click)="addToList(i)">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </ng-template>
+    <pagination [count]="count" [maxPage]="7" (current)="onPageChange($event)" (pp)="ppChange($event)"></pagination>
+</div>

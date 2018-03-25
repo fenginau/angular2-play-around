@@ -75,6 +75,10 @@ export class CompanyListComponent {
         }
     }
 
+    add() {
+        this.globals.goto('company/0', {});
+    }
+
     ngOnInit() {
         this.getCount();
     }

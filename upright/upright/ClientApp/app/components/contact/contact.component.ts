@@ -13,9 +13,9 @@ import { NgForm, NgModel } from '@angular/forms';
     providers: [Globals]
 })
 export class ContactComponent {
-    public contactId: number;
-    public companySelect: ICompanySelectModel[];
-    public oldContact: IContactModel = {
+    contactId: number;
+    companySelect: ICompanySelectModel[];
+    oldContact: IContactModel = {
         contactId: 0,
         contactName: '',
         contactEmail: '',
@@ -24,7 +24,7 @@ export class ContactComponent {
         companyId: 0,
         companyName: ''
     };
-    public newContact: IContactModel = {
+    newContact: IContactModel = {
         contactId: 0,
         contactName: '',
         contactEmail: '',
@@ -34,13 +34,14 @@ export class ContactComponent {
         companyName: ''
     };
 
-    public hasError: string;
-    public processing: boolean = false;
+    hasError: string;
+    processing: boolean = false;
+    companyLock: boolean = false;
 
     @Input()
-    public isEdit: boolean = false;
+    isEdit: boolean = false;
     @Input()
-    public isEmbed: boolean = false;
+    isEmbed: boolean = false;
 
     constructor(
         private route: ActivatedRoute,
@@ -50,7 +51,11 @@ export class ContactComponent {
         @Inject('BASE_URL') private baseUrl: string
     ) {
         route.params.subscribe(val => {
-            let id = this.route.snapshot.paramMap.get('id');
+            this.newContact.companyId = Number(val['company']);
+            if (this.newContact.companyId > 0) {
+                this.companyLock = true;
+            }
+            const id = this.route.snapshot.paramMap.get('id');
             this.contactId = Number(id);
             if (this.contactId > 0) {
                 this.getContact();
@@ -61,7 +66,9 @@ export class ContactComponent {
     }
 
     setEdit() {
-        this.newContact = { ...this.oldContact };
+        if (this.oldContact.contactId > 0) {
+            this.newContact = { ...this.oldContact };
+        }
         this.isEdit = true;
     }
 

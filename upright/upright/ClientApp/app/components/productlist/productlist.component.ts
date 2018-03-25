@@ -39,7 +39,7 @@ export class ProductListComponent {
         }
     }
 
-    getAllContact() {
+    getAllProduct() {
         this.http.get(`${this.baseUrl}api/business/GetAllProduct?pp=${this.perPage}&page=${this.currentPage}`).subscribe(result => {
             if (result.ok) {
                 this.productList = result.json() as IProductModel[];
@@ -48,7 +48,7 @@ export class ProductListComponent {
         }, error => this.getError(error));
     }
 
-    getCompanyContact() {
+    getCompanyProduct() {
         this.http.get(`${this.baseUrl}api/business/GetCompanyProduct?pp=${this.perPage}&page=${this.currentPage}&company=${this.company}`).subscribe(result => {
             if (result.ok) {
                 this.productList = result.json() as IProductModel[];
@@ -91,9 +91,9 @@ export class ProductListComponent {
         this.currentPage = page;
         if (!this.isSearch) {
             if (this.company > 0) {
-                this.getCompanyContact();
+                this.getCompanyProduct();
             } else {
-                this.getAllContact();
+                this.getAllProduct();
             }
         }
     }
@@ -107,6 +107,10 @@ export class ProductListComponent {
                 this.hasError = '';
             }
         }, error => this.getError(error));
+    }
+
+    add() {
+        this.globals.goto('product/0', { company: this.company });
     }
 
     ngOnInit() {

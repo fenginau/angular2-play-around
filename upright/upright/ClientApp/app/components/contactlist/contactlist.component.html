@@ -6,6 +6,9 @@
     <em *ngIf="hasError">{{hasError}}</em>
 </p>
 <ng-template #dataBlock>
+    <div class="row container">
+        <button type="button" class="btn btn-primary" (click)="add()">New Contact</button>
+    </div>
     <table class="table">
         <thead>
         <tr>

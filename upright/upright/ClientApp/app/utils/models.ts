@@ -27,6 +27,26 @@ export interface IContactModel {
     companyName: string;
 }
 
+export interface ITradeModel {
+    tradeId: number;
+    companyId: number;
+    tradeType: number;
+    tradeInvoice: string;
+    tradeDate: Date|null;
+    tradeNote: string;
+    companyName: string;
+    products: ITradeProductModel[];
+};
+
+export interface ITradeProductModel {
+    tradeId: number;
+    productId: number;
+    productName: string;
+    quantity: number;
+    unitPrice: number;
+    total: number;
+};
+
 export interface ICompanySelectModel {
     companyId: number;
     companyName: string;

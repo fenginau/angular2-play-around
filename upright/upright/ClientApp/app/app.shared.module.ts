@@ -17,6 +17,8 @@ import { ContactComponent } from './components/contact/contact.component';
 import { ContactListComponent } from './components/contactlist/contactlist.component';
 import { ProductComponent } from './components/product/product.component';
 import { ProductListComponent } from './components/productlist/productlist.component';
+import { ProductSelectComponent } from './components/productselect/productselect.component';
+import { TradeComponent } from './components/trade/trade.component';
 
 
 @NgModule({
@@ -33,7 +35,9 @@ import { ProductListComponent } from './components/productlist/productlist.compo
         ContactComponent,
         ContactListComponent,
         ProductComponent,
-        ProductListComponent
+        ProductListComponent,
+        ProductSelectComponent,
+        TradeComponent
     ],
     imports: [
         CommonModule,
@@ -54,6 +58,7 @@ import { ProductListComponent } from './components/productlist/productlist.compo
             { path: 'contact/:id', component: ContactComponent },
             { path: 'productlist', component: ProductListComponent },
             { path: 'product/:id', component: ProductComponent },
+            { path: 'trade/:id', component: TradeComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ]

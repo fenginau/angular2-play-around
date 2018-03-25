@@ -22,6 +22,8 @@ export class SearchareaComponent {
     pp: number;
     @Input()
     inView: boolean;
+    @Input()
+    expand: boolean = false;
     @Output()
     result: EventEmitter<ISearchReturnModel|null> = new EventEmitter<ISearchReturnModel|null>();
 
@@ -29,6 +31,7 @@ export class SearchareaComponent {
     searchControl = SearchControl;
     conditions: ISearchModel[] = [];
     searchParams: ISearchParams[] = [];
+    toggled: boolean = true;
 
     constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string, private globals: Globals) { }
 

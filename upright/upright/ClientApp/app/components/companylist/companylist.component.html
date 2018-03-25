@@ -6,22 +6,25 @@
     <em *ngIf="hasError">{{hasError}}</em>
 </p>
 <ng-template #dataBlock>
+    <div class="row container">
+        <button type="button" class="btn btn-primary" (click)="add()">New Company</button>
+    </div>
     <table class="table">
         <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>ABN</th>
-            <th>Phone</th>
-        </tr>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>ABN</th>
+                <th>Phone</th>
+            </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let company of companyList" (click)="viewDetail(company.companyId)">
-            <td>{{ company.companyId }}</td>
-            <td>{{ company.companyName }}</td>
-            <td>{{ company.companyAbn }}</td>
-            <td>{{ company.companyPhone1 }}</td>
-        </tr>
+            <tr *ngFor="let company of companyList" (click)="viewDetail(company.companyId)">
+                <td>{{ company.companyId }}</td>
+                <td>{{ company.companyName }}</td>
+                <td>{{ company.companyAbn }}</td>
+                <td>{{ company.companyPhone1 }}</td>
+            </tr>
         </tbody>
     </table>
 </ng-template>

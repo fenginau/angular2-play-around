@@ -13,16 +13,16 @@ import { NgForm, NgModel } from '@angular/forms';
     providers: [Globals]
 })
 export class ProductComponent {
-    public productId: number;
-    public companySelect: ICompanySelectModel[];
-    public oldProduct: IProductModel = {
+    productId: number;
+    companySelect: ICompanySelectModel[];
+    oldProduct: IProductModel = {
         productId: 0,
         productName: '',
         productDesc: '',
         companyId: 0,
         companyName: ''
     };
-    public newProduct: IProductModel = {
+    newProduct: IProductModel = {
         productId: 0,
         productName: '',
         productDesc: '',
@@ -30,13 +30,14 @@ export class ProductComponent {
         companyName: ''
     };
 
-    public hasError: string;
-    public processing: boolean = false;
+    hasError: string;
+    processing: boolean = false;
+    companyLock: boolean = false;
 
     @Input()
-    public isEdit: boolean = false;
+    isEdit: boolean = false;
     @Input()
-    public isEmbed: boolean = false;
+    isEmbed: boolean = false;
 
     constructor(
         private route: ActivatedRoute,
@@ -46,6 +47,10 @@ export class ProductComponent {
         @Inject('BASE_URL') private baseUrl: string
     ) {
         route.params.subscribe(val => {
+            this.newProduct.companyId = Number(val['company']);
+            if (this.newProduct.companyId > 0) {
+                this.companyLock = true;
+            }
             let id = this.route.snapshot.paramMap.get('id');
             this.productId = Number(id);
             if (this.productId > 0) {
@@ -57,7 +62,9 @@ export class ProductComponent {
     }
 
     setEdit() {
-        this.newProduct = { ...this.oldProduct };
+        if (this.oldProduct.productId > 0) {
+            this.newProduct = { ...this.oldProduct };
+        }
         this.isEdit = true;
     }
 

@@ -110,6 +110,23 @@ namespace upright.Repos
             }
         }
 
+        public static string GetCompanyName(int companyId)
+        {
+            try
+            {
+                using (var context = new BusinessContext())
+                {
+                    return context.Company.Where(c => c.CompanyId == companyId).Select(c => c.CompanyName).Single();
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Info("Company - GetCompanyName");
+                Logger.Error(e);
+                throw new Exception("Error when requesting comany name.", e);
+            }
+        }
+
         public static dynamic Search(List<SearchParamModel> searchParams, int pp, int page)
         {
             try

@@ -1,0 +1,98 @@
+﻿<div *ngIf="hasError ; else dataBlock" class="container text-center vcenter">
+    <em>{{hasError}}</em>
+</div>
+<ng-template #dataBlock>
+    <div>
+        <div *ngIf="isEdit; else viewBlock">
+            <h3 *ngIf="tradeId > 0">Edit Trade</h3>
+            <h3 *ngIf="tradeId == 0">New Trade</h3>
+            <form (ngSubmit)="onSubmit(tradeForm)" #tradeForm="ngForm">
+                <div class="form-group">
+                    <label for="inputTradeCompany" class="control-label">Company</label>
+                    <input type="text" class="form-control" id="inputTradeCompany"
+                           [(ngModel)]="newTrade.companyName" name="company" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="inputTradeType0" class="control-label">Type</label>
+                    <div>
+                        <label class="radio">
+                            Sell
+                            <input type="radio" id="inputTradeType0" name="radiotype" value="0" [(ngModel)]="newTrade.tradeType">
+                            <span class="checkmark-rd"></span>
+                        </label>
+                        <label class="radio">
+                            Buy
+                            <input type="radio" id="inputTradeType1" name="radiotype" value="1" [(ngModel)]="newTrade.tradeType">
+                            <span class="checkmark-rd"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="newTrade.tradeType == 0">
+                    <label for="inputTradeInvoice" class="control-label">Invoice Number</label>
+                    <input type="text" class="form-control" id="inputTradeInvoice"
+                           [(ngModel)]="newTrade.tradeInvoice" name="invoice">
+                </div>
+                <div class="form-group">
+                    <label for="inputTradeDesc" class="control-label">Note</label>
+                    <textarea type="text" class="form-control" id="inputTradeDesc" rows="3"
+                              [(ngModel)]="newTrade.tradeDesc" name="desc"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="inputTradeProduct" class="control-label">Product</label>
+                    <div class="row container-fluid text-right">
+                        <button type="button" class="btn btn-primary" (click)="editProduct()">Edit Product</button>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Unit Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let product of newTrade.products; let i = index">
+                                <td>
+                                    {{ product.productName }}
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="inputUnitPrice{{i}}"
+                                               [(ngModel)]="product.unitPrice" name="unitprice{{i}}">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="inputQuantity{{i}}"
+                                               [(ngModel)]="product.quantity" name="quantity{{i}}">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="inputTotal{{i}}" value="{{product.quantity * product.unitPrice}}"
+                                               [(ngModel)]="product.total" name="total{{i}}" disabled>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="inview" *ngIf="productSelectShow">
+                        <product-select id="inputTradeProduct" (result)="getProduct($event)"></product-select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" [disabled]="!tradeForm.valid" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-default" (click)="cancelEdit()">Cancel</button>
+                </div>
+            </form>
+        </div>
+        <ng-template #viewBlock>
+            <div class="row">
+                <div class="col-xs-9"><h3>Trade Detail</h3></div>
+                <div class="col-xs-3 text-right"><button type="button" class="btn btn-primary edit-btn" (click)="setEdit()">Edit</button></div>
+            </div>
+            <form class="form-horizontal"></form>
+        </ng-template>
+    </div>
+</ng-template>
