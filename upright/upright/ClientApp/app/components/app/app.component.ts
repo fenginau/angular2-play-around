@@ -15,14 +15,14 @@ export class AppComponent {
     ) {
         sharedService.changeEmitted$.subscribe(text => {
             switch (text) {
-                case 'showloader':
-                    this.loading = true;
-                    break;
-                case 'hideloader':
-                    this.loading = false;
-                    break;
-                default:
-                    break;
+            case 'showloader':
+                this.loading = true;
+                break;
+            case 'hideloader':
+                this.loading = false;
+                break;
+            default:
+                break;
             }
         });
     }
