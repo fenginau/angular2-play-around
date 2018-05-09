@@ -78,7 +78,7 @@ export class ProductListComponent {
     }
 
     viewDetail(productId: number) {
-        this.globals.goto(`product/${productId}`, {});
+        this.globals.goto(`/console/product/${productId}`, {});
     }
 
     getSearchResult(result: any) {
@@ -110,7 +110,7 @@ export class ProductListComponent {
     }
 
     add() {
-        this.globals.goto('product/0', { company: this.company });
+        this.globals.goto('/console/product/0', { company: this.company });
     }
 
     ngOnInit() {

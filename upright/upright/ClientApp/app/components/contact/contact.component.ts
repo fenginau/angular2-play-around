@@ -89,7 +89,7 @@ export class ContactComponent {
             if (result.ok) {
                 const contact = result.json() as IContactModel;
                 if (this.oldContact.contactId === 0) {
-                    this.globals.goto(`/contact/${contact.contactId}`, {});
+                    this.globals.goto(`/console/contact/${contact.contactId}`, {});
                 } else {
                     this.oldContact = { ...contact };
                 }

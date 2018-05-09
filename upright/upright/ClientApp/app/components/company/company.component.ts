@@ -71,7 +71,7 @@ export class CompanyComponent {
             if (result.ok) {
                 const company = result.json() as ICompanyModel;
                 if (this.oldCompany.companyId === 0) {
-                    this.globals.goto(`/company/${company.companyId}/contact/${company.companyId}`, {});
+                    this.globals.goto(`/console/company/${company.companyId}/contact/${company.companyId}`, {});
                 } else {
                     this.oldCompany = { ...company };
                 }
@@ -111,7 +111,7 @@ export class CompanyComponent {
     }
 
     gotoTrade() {
-        this.globals.goto('trade/0', { company: this.companyId });
+        this.globals.goto('/console/trade/0', { company: this.companyId });
     }
 
     ngOnInit() {

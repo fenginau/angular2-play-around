@@ -81,7 +81,7 @@ export class ContactListComponent {
     }
 
     viewDetail(contactId: number) {
-        this.globals.goto(`contact/${contactId}`, {});
+        this.globals.goto(`/console/contact/${contactId}`, {});
     }
 
     getSearchResult(result: any) {
@@ -113,7 +113,7 @@ export class ContactListComponent {
     }
 
     add() {
-        this.globals.goto('contact/0', {company: this.company});
+        this.globals.goto('/console/contact/0', {company: this.company});
     }
 
     ngOnInit() {

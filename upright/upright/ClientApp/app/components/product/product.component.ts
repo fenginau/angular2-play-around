@@ -85,7 +85,7 @@ export class ProductComponent {
             if (result.ok) {
                 const product = result.json() as IProductModel;
                 if (this.oldProduct.productId === 0) {
-                    this.globals.goto(`/product/${product.productId}`, {});
+                    this.globals.goto(`/console/product/${product.productId}`, {});
                 } else {
                     this.oldProduct = { ...product };
                 }

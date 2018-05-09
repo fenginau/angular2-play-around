@@ -96,7 +96,7 @@ export class TradeComponent {
             if (result.ok) {
                 const trade = result.json() as ITradeModel;
                 if (this.oldTrade.tradeId === 0) {
-                    this.globals.goto(`/trade/${trade.tradeId}`, {});
+                    this.globals.goto(`/console/trade/${trade.tradeId}`, {});
                 } else {
                     this.oldTrade = { ...trade };
                 }
