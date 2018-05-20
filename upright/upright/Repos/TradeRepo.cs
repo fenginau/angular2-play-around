@@ -9,111 +9,118 @@ using upright.Models;
 
 namespace upright.Repos
 {
-    public class ContactRepo
+    public class TradeRepo
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        public static List<ContactViewModel> GetAllContact(int pp, int page)
+        public static List<TradeViewModel> GetAllTrade(int pp, int page)
         {
             try
             {
                 using (var context = new BusinessContext())
                 {
-                    var contactList = context.ContactView
+                    var tradeList = context.TradeView
                         .FromSql(
-                            "SELECT C.*, CO.COMPANY_NAME FROM UR_CONTACT C LEFT JOIN UR_COMPANY CO ON C.COMPANY_ID = CO.COMPANY_ID")
+                            @"SELECT T.*, CO.COMPANY_NAME FROM UR_TRADE T LEFT JOIN UR_COMPANY CO ON T.COMPANY_ID = CO.COMPANY_ID")
                         .Skip(pp * (page - 1)).Take(pp).ToList();
 
-                    return contactList;
+                    return tradeList;
                 }
             }
             catch (Exception e)
             {
-                Logger.Info("Contact - GetAllContact");
+                Logger.Info("Trade - GetAllTrade");
                 Logger.Error(e);
                 return null;
             }
         }
 
-        public static List<ContactViewModel> GetCompanyContact(int pp, int page, int companyId)
+        public static List<TradeViewModel> GetCompanyTrade(int pp, int page, int companyId)
         {
             try
             {
                 using (var context = new BusinessContext())
                 {
-                    var contactList = context.ContactView
+                    var tradeList = context.TradeView
                         .FromSql(
-                            "SELECT C.*, CO.COMPANY_NAME FROM UR_CONTACT C LEFT JOIN UR_COMPANY CO ON C.COMPANY_ID = CO.COMPANY_ID")
-                        .Where(c => c.CompanyId == companyId).Skip(pp * (page - 1)).Take(pp).ToList();
-
-                    return contactList;
+                            @"SELECT T.*, CO.COMPANY_NAME FROM UR_TRADE T LEFT JOIN UR_COMPANY CO ON T.COMPANY_ID = CO.COMPANY_ID")
+                        .Where(p => p.CompanyId == companyId)
+                        .Skip(pp * (page - 1)).Take(pp).ToList();
+                    return tradeList;
                 }
             }
             catch (Exception e)
             {
-                Logger.Info("Contact - GetCompanyContact");
+                Logger.Info("Trade - GetCompanyTrade");
                 Logger.Error(e);
                 return null;
             }
         }
 
-        public static ContactViewModel GetContact(int contactId)
+        public static TradeViewModel GetTrade(int tradeId)
         {
             try
             {
                 using (var context = new BusinessContext())
                 {
-                    return context.ContactView
+                    return context.TradeView
                         .FromSql(
-                            $"SELECT C.*, CO.COMPANY_NAME FROM UR_CONTACT C LEFT JOIN UR_COMPANY CO ON C.COMPANY_ID = CO.COMPANY_ID WHERE C.CONTACT_ID = {contactId}")
+                            $"SELECT T.*, CO.COMPANY_NAME FROM UR_TRADE T LEFT JOIN UR_COMPANY CO ON T.COMPANY_ID = CO.COMPANY_ID WHERE T.TRADE_ID = {tradeId}")
                         .FirstOrDefault();
                 }
             }
             catch (Exception e)
             {
-                Logger.Info("Contact - GetContact");
+                Logger.Info("Trade - GetTrade");
                 Logger.Error(e);
                 return null;
             }
         }
 
-        public static ContactModel SaveContact(ContactModel contact)
+        public static TradeModel SaveTrade(TradeModel trade)
         {
             try
             {
                 using (var context = new BusinessContext())
                 {
-                    if (contact.ContactId > 0)
+                    if (trade.TradeId > 0)
                     {
-                        context.Contact.Update(contact);
+                        context.Trade.Update(trade);
                     }
                     else
                     {
-                        context.Contact.Add(contact);
+                        context.Trade.Add(trade);
                     }
+
+                    //delete all the products belong to this trade
+                    context.TradeProduct.RemoveRange(context.TradeProduct.Where(p => p.TradeId == trade.TradeId));
+                    //set trade id to the products and save them
+                    trade.Products.ForEach(product => { product.TradeId = trade.TradeId; });
+                    context.TradeProduct.AddRange(trade.Products);
+
                     context.SaveChanges();
-                    return contact;
+                    return trade;
                 }
             }
             catch (Exception e)
             {
-                Logger.Info("Contact - SaveContact");
+                Logger.Info("Trade - SaveTrade");
                 Logger.Error(e);
                 return null;
             }
         }
 
-        public static int GetContactCount(int companyId)
+        public static int GetTradeCount(int companyId)
         {
             try
             {
                 using (var context = new BusinessContext())
                 {
-                    return companyId > 0 ? context.Contact.Count(c => c.CompanyId == companyId) : context.Contact.Count();
+                    return companyId > 0 ? context.Trade.Count(p => p.CompanyId == companyId) : context.Trade.Count();
                 }
             }
             catch (Exception e)
             {
-                Logger.Info("Contact - GetContactCount");
+                Logger.Info("Trade - GetTradeCount");
                 Logger.Error(e);
                 return -1;
             }
@@ -125,12 +132,9 @@ namespace upright.Repos
             {
                 var dic = new Dictionary<string, string>
                 {
-                    { "NAME", "C.CONTACT_NAME" },
-                    { "ADDRESS", "C.CONTACT_ADDRESS" },
-                    { "EMAIL", "C.CONTACT_EMAIL" },
-                    { "PHONE", "C.CONTACT_PHONE1" },
-                    { "MOBILE", "C.CONTACT_PHONE2" },
-                    { "COMPANY", "C.COMPANY_ID" }
+                    { "NAME", "P.PRODUCT_NAME" },
+                    { "DESC", "P.PRODUCT_DESC" },
+                    { "COMPANY", "P.COMPANY_ID" }
                 };
 
                 using (var context = new BusinessContext())
@@ -145,10 +149,7 @@ namespace upright.Repos
                         switch (s.Key.ToUpper())
                         {
                             case "NAME":
-                            case "ADDRESS":
-                            case "EMAIL":
-                            case "PHONE":
-                            case "MOBILE":
+                            case "DESC":
                                 var valueSet = s.Value.Split(',');
                                 foreach (var value in valueSet)
                                 {
@@ -166,15 +167,15 @@ namespace upright.Repos
                         condition.AppendLine($"AND {condStr}");
                     });
                     var sql =
-                        $"SELECT C.*, CO.COMPANY_NAME FROM UR_CONTACT C LEFT JOIN UR_COMPANY CO ON C.COMPANY_ID = CO.COMPANY_ID {condition}";
-                    var count = context.ContactView.FromSql(sql).Count();
-                    var contactList = context.ContactView.FromSql(sql).Skip(pp * (page - 1)).Take(pp).ToList();
-                    return new { count, result = contactList };
+                        $"SELECT P.*, CO.COMPANY_NAME FROM UR_PRODUCT P LEFT JOIN UR_COMPANY CO ON P.COMPANY_ID = CO.COMPANY_ID {condition}";
+                    var count = context.ProductView.FromSql(sql).Count();
+                    var productList = context.ProductView.FromSql(sql).Skip(pp * (page - 1)).Take(pp).ToList();
+                    return new { count, result = productList };
                 }
             }
             catch (Exception e)
             {
-                Logger.Info("Contact - Search");
+                Logger.Info("Product - Search");
                 Logger.Error(e);
                 return null;
             }

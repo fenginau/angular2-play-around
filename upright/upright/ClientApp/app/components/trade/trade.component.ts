@@ -85,9 +85,9 @@ export class TradeComponent {
 
     onSubmit(form: NgForm) {
         console.log(this.newTrade);
-        //if (form.valid) {
-        //    this.saveTrade();
-        //}
+        if (form.valid) {
+            this.saveTrade();
+        }
     }
 
     saveTrade() {

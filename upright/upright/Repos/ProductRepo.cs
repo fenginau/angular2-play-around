@@ -62,11 +62,10 @@ namespace upright.Repos
             {
                 using (var context = new BusinessContext())
                 {
-                    var prodict = context.ProductView
+                    return context.ProductView
                         .FromSql(
                             $"SELECT P.*, CO.COMPANY_NAME FROM UR_PRODUCT P LEFT JOIN UR_COMPANY CO ON P.COMPANY_ID = CO.COMPANY_ID WHERE P.PRODUCT_ID = {productId}")
-                        .ToList();
-                    return prodict.Count > 0 ? prodict[0] : null;
+                        .FirstOrDefault();
                 }
             }
             catch (Exception e)

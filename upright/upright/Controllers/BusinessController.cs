@@ -198,6 +198,18 @@ namespace Upright.Controllers
         }
         #endregion
 
+        #region trade
+        [HttpPost("[action]")]
+        public IActionResult SaveTrade([FromBody] TradeModel trade)
+        {
+            if (TradeRepo.SaveTrade(trade) != null)
+            {
+                return Ok(trade);
+            }
+            return StatusCode(500);
+        }
+        #endregion
+
         #region search
 
         [HttpPost("[action]")]

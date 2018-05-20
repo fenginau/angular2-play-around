@@ -17,6 +17,17 @@ namespace upright.DBContext
         public virtual DbSet<ProductModel> Product { get; set; }
         public virtual DbSet<ProductViewModel> ProductView { get; set; }
 
+        public virtual DbSet<TradeModel> Trade { get; set; }
+        public virtual DbSet<TradeViewModel> TradeView { get; set; }
+
+        public virtual DbSet<TradeProductModel> TradeProduct { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<TradeProductModel>()
+                .HasKey(t => new { t.TradeId, t.ProductId });
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
