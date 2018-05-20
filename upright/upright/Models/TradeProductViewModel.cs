@@ -4,8 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace upright.Models
 {
-    [Table("UR_TRADE_PRODUCT")]
-    public class TradeProductModel
+    public class TradeProductViewModel
     {
         [Column("TRADE_ID")]
         public int TradeId { get; set; }
@@ -15,5 +14,7 @@ namespace upright.Models
         public double UnitPrice { get; set; }
         [Column("QUANTITY")]
         public int Quantity { get; set; }
+        [Column("PRODUCT_NAME")]
+        public string ProductName { get; set; }
     }
 }

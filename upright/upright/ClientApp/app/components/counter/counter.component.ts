@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import * as $ from 'jquery';
+import 'bootstrap-daterangepicker';
 
 @Component({
     selector: 'counter',
@@ -9,5 +11,12 @@ export class CounterComponent {
 
     public incrementCounter() {
         this.currentCount++;
+    }
+
+    ngOnInit() {
+        $('input[name="birthdate"]').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true
+        });
     }
 }

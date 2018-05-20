@@ -199,6 +199,50 @@ namespace Upright.Controllers
         #endregion
 
         #region trade
+        [HttpGet("[action]")]
+        public IActionResult GetAllTrade(int pp, int page)
+        {
+            var tradeList = TradeRepo.GetAllTrade(pp, page);
+            if (tradeList != null)
+            {
+                return new ObjectResult(tradeList);
+            }
+            return StatusCode(500);
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult GetCompanyTrade(int pp, int page, int company)
+        {
+            var tradeList = TradeRepo.GetCompanyTrade(pp, page, company);
+            if (tradeList != null)
+            {
+                return new ObjectResult(tradeList);
+            }
+            return StatusCode(500);
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult GetTrade(int tradeId)
+        {
+            var trade = TradeRepo.GetTrade(tradeId);
+            if (trade != null)
+            {
+                return new ObjectResult(trade);
+            }
+            return StatusCode(500);
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult GetTradeCount(int company)
+        {
+            var count = TradeRepo.GetTradeCount(company);
+            if (count > -1)
+            {
+                return new ObjectResult(count);
+            }
+            return StatusCode(500);
+        }
+
         [HttpPost("[action]")]
         public IActionResult SaveTrade([FromBody] TradeModel trade)
         {
@@ -221,23 +265,28 @@ namespace Upright.Controllers
                     var companyList = CompanyRepo.Search(searchParamList, pp, page);
                     if (companyList != null)
                     {
-                        return new ObjectResult(companyList); ;
+                        return new ObjectResult(companyList);
                     }
                     break;
                 case "CONTACT":
                     var contactList = ContactRepo.Search(searchParamList, pp, page);
                     if (contactList != null)
                     {
-                        return new ObjectResult(contactList); ;
+                        return new ObjectResult(contactList);
                     }
                     break;
                 case "TRADE":
+                    var tradeList = TradeRepo.Search(searchParamList, pp, page);
+                    if (tradeList != null)
+                    {
+                        return new ObjectResult(tradeList);
+                    }
                     break;
                 case "PRODUCT":
                     var productList = ProductRepo.Search(searchParamList, pp, page);
                     if (productList != null)
                     {
-                        return new ObjectResult(productList); ;
+                        return new ObjectResult(productList);
                     }
                     break;
 

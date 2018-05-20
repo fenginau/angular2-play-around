@@ -5,6 +5,9 @@ import { Location } from '@angular/common';
 import { Globals } from '../../utils/globals';
 import { ITradeModel, IProductModel, ITradeProductModel } from '../../utils/models';
 import { NgForm, NgModel } from '@angular/forms';
+import * as $ from 'jquery';
+import * as moment from 'moment';
+import 'bootstrap-daterangepicker';
 
 @Component({
     selector: 'trade',
@@ -20,7 +23,7 @@ export class TradeComponent {
         companyId: 0,
         tradeType: 0,
         tradeInvoice: '',
-        tradeDate: null,
+        tradeDate: moment().format(this.globals.dateFormat),
         tradeNote: '',
         companyName: '',
         products: []
@@ -30,7 +33,7 @@ export class TradeComponent {
         companyId: 0,
         tradeType: 0,
         tradeInvoice: '',
-        tradeDate: null,
+        tradeDate: moment().format(this.globals.dateFormat),
         tradeNote: '',
         companyName: '',
         products: []
@@ -59,7 +62,6 @@ export class TradeComponent {
             if (this.tradeId > 0) {
                 this.getTrade();
             } else {
-                console.log(val);
                 this.companyId = Number(val['company']);
                 if (this.companyId > 0) {
                     this.setEdit();
@@ -77,6 +79,7 @@ export class TradeComponent {
             this.newTrade = { ...this.oldTrade };
         }
         this.isEdit = true;
+        this.initDatePicker();
     }
 
     cancelEdit() {
@@ -119,6 +122,12 @@ export class TradeComponent {
         this.http.get(`${this.baseUrl}api/business/GetTrade?tradeid=${this.tradeId}`).subscribe(result => {
             if (result.ok) {
                 this.oldTrade = result.json() as ITradeModel;
+                console.log(this.oldTrade);
+                this.oldTrade.tradeType = this.oldTrade.tradeType.toString();
+                this.oldTrade.tradeDate = moment(this.oldTrade.tradeDate).format(this.globals.dateFormat);
+                this.oldTrade.products.forEach(p => {
+                    p.total = p.quantity * p.unitPrice;
+                });
                 this.newTrade = { ...this.oldTrade};
                 this.hasError = '';
             }
@@ -133,7 +142,6 @@ export class TradeComponent {
     getCompanyName(companyId: number) {
         this.http.get(`${this.baseUrl}api/business/GetCompanyName?companyid=${companyId}`).subscribe(result => {
             if (result.ok) {
-                console.log(result);
                 this.newTrade.companyName = result.text() as string;
                 this.hasError = '';
             }
@@ -172,6 +180,23 @@ export class TradeComponent {
         this.productSelectShow = true;
     }
 
+    initDatePicker() {
+        setTimeout(() => {
+            $('#inputTradeDate').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                autoUpdateInput: true,
+                locale: {
+                    format: this.globals.dateFormat
+                }
+            }, (start: any, end: any, label: any) => {
+                console.log(typeof start);
+                this.newTrade.tradeDate = start.format(this.globals.dateFormat);
+            });
+        }, 1000);
+    }
+
     ngOnInit() {
+        this.initDatePicker();
     }
 }

@@ -30,9 +30,9 @@ export interface IContactModel {
 export interface ITradeModel {
     tradeId: number;
     companyId: number;
-    tradeType: number;
+    tradeType: number|string;
     tradeInvoice: string;
-    tradeDate: Date|null;
+    tradeDate: Date|string;
     tradeNote: string;
     companyName: string;
     products: ITradeProductModel[];

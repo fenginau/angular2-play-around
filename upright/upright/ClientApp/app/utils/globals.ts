@@ -5,6 +5,9 @@ import { SharedService } from '../utils/sharedservice';
 
 @Injectable()
 export class Globals {
+    dateFormat: string = 'YYYY/MM/DD';
+    datePipeFormat: string = 'yyyy/MM/dd';
+
     constructor(
         private route: ActivatedRoute,
         private router: Router,

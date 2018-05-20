@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -13,11 +14,11 @@ namespace upright.Models
         [Column("COMPANY_ID")]
         public int CompanyId { get; set; }
         [Column("TRADE_TYPE")]
-        public string TradeType { get; set; }
+        public int TradeType { get; set; }
         [Column("TRADE_INVOICE")]
         public string TradeInvoice { get; set; }
         [Column("TRADE_DATE")]
-        public string TradeDate { get; set; }
+        public DateTime TradeDate { get; set; }
         [Column("TRADE_NOTE")]
         public string TradeNote { get; set; }
         [NotMapped]

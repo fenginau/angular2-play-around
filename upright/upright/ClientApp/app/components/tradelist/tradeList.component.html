@@ -1,0 +1,29 @@
+﻿<h1 *ngIf="!inView">Trade List</h1>
+<search-area [module]="'trade'" [fields]="fields" [message]="'Click trade to get further information.'"
+             [page]="currentPage" [pp]="perPage" [inView]="inView" (result)="getSearchResult($event)"></search-area>
+<p *ngIf="!tradeList ; else dataBlock">
+    <em *ngIf="!hasError">Loading...</em>
+    <em *ngIf="hasError">{{hasError}}</em>
+</p>
+<ng-template #dataBlock>
+    <!--<div class="row container">
+        <button type="button" class="btn btn-primary" (click)="add()">New Trade</button>
+    </div>-->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Company</th>
+                <th>Type</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let trade of tradeList" (click)="viewDetail(trade.tradeId)">
+                <td>{{ trade.companyName }}</td>
+                <td>{{ getTradeType(trade.tradeType) }}</td>
+                <td>{{ trade.tradeDate | date:globals.datePipeFormat }}</td>
+            </tr>
+        </tbody>
+    </table>
+</ng-template>
+<pagination [count]="count" [maxPage]="7" (current)="onPageChange($event)" (pp)="ppChange($event)"></pagination>

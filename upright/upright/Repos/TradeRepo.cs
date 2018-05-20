@@ -62,10 +62,20 @@ namespace upright.Repos
             {
                 using (var context = new BusinessContext())
                 {
-                    return context.TradeView
+                    var trade = context.TradeView
                         .FromSql(
                             $"SELECT T.*, CO.COMPANY_NAME FROM UR_TRADE T LEFT JOIN UR_COMPANY CO ON T.COMPANY_ID = CO.COMPANY_ID WHERE T.TRADE_ID = {tradeId}")
                         .FirstOrDefault();
+
+                    if (trade != null)
+                    {
+                        trade.Products = context.TradeProductView
+                            .FromSql(
+                                "SELECT T.*, P.PRODUCT_NAME FROM UR_TRADE_PRODUCT T LEFT JOIN UR_PRODUCT P ON T.PRODUCT_ID = P.PRODUCT_ID")
+                            .Where(p => p.TradeId == tradeId).ToList();
+                    }
+
+                    return trade;
                 }
             }
             catch (Exception e)
@@ -78,34 +88,40 @@ namespace upright.Repos
 
         public static TradeModel SaveTrade(TradeModel trade)
         {
-            try
+            using (var context = new BusinessContext())
             {
-                using (var context = new BusinessContext())
+                using (var transaction = context.Database.BeginTransaction())
                 {
-                    if (trade.TradeId > 0)
+                    try
                     {
-                        context.Trade.Update(trade);
+                        if (trade.TradeId > 0)
+                        {
+                            context.Trade.Update(trade);
+                        }
+                        else
+                        {
+                            context.Trade.Add(trade);
+                        }
+
+                        context.SaveChanges();
+                        //delete all the products belong to this trade
+                        context.TradeProduct.RemoveRange(context.TradeProduct.Where(p => p.TradeId == trade.TradeId));
+                        context.SaveChanges();
+                        //set trade id to the products and save them
+                        trade.Products.ForEach(product => { product.TradeId = trade.TradeId; });
+                        context.TradeProduct.AddRange(trade.Products);
+                        context.SaveChanges();
+                        transaction.Commit();
+                        return trade;
                     }
-                    else
+                    catch (Exception e)
                     {
-                        context.Trade.Add(trade);
+                        transaction.Rollback();
+                        Logger.Info("Trade - SaveTrade");
+                        Logger.Error(e);
+                        return null;
                     }
-
-                    //delete all the products belong to this trade
-                    context.TradeProduct.RemoveRange(context.TradeProduct.Where(p => p.TradeId == trade.TradeId));
-                    //set trade id to the products and save them
-                    trade.Products.ForEach(product => { product.TradeId = trade.TradeId; });
-                    context.TradeProduct.AddRange(trade.Products);
-
-                    context.SaveChanges();
-                    return trade;
                 }
-            }
-            catch (Exception e)
-            {
-                Logger.Info("Trade - SaveTrade");
-                Logger.Error(e);
-                return null;
             }
         }
 
@@ -132,9 +148,10 @@ namespace upright.Repos
             {
                 var dic = new Dictionary<string, string>
                 {
-                    { "NAME", "P.PRODUCT_NAME" },
-                    { "DESC", "P.PRODUCT_DESC" },
-                    { "COMPANY", "P.COMPANY_ID" }
+                    { "DATE", "T.TRADE_DATE" },
+                    { "INVOICE", "T.TRADE_INVOICE" },
+                    { "TYPE", "T.TRADE_TYPE" },
+                    { "COMPANY", "T.COMPANY_ID" }
                 };
 
                 using (var context = new BusinessContext())
@@ -162,20 +179,23 @@ namespace upright.Repos
                             case "COMPANY":
                                 condStr.Append($"{column} IN ({s.Value})");
                                 break;
+                            case "TYPE":
+                                condStr.Append($"{column} = {s.Value}");
+                                break;
                         }
 
                         condition.AppendLine($"AND {condStr}");
                     });
                     var sql =
-                        $"SELECT P.*, CO.COMPANY_NAME FROM UR_PRODUCT P LEFT JOIN UR_COMPANY CO ON P.COMPANY_ID = CO.COMPANY_ID {condition}";
-                    var count = context.ProductView.FromSql(sql).Count();
-                    var productList = context.ProductView.FromSql(sql).Skip(pp * (page - 1)).Take(pp).ToList();
-                    return new { count, result = productList };
+                        $"SELECT T.*, CO.COMPANY_NAME FROM UR_TRADE T LEFT JOIN UR_COMPANY CO ON T.COMPANY_ID = CO.COMPANY_ID {condition}";
+                    var count = context.TradeView.FromSql(sql).Count();
+                    var tradeList = context.TradeView.FromSql(sql).Skip(pp * (page - 1)).Take(pp).ToList();
+                    return new { count, result = tradeList };
                 }
             }
             catch (Exception e)
             {
-                Logger.Info("Product - Search");
+                Logger.Info("Trade - Search");
                 Logger.Error(e);
                 return null;
             }

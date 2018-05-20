@@ -22,6 +22,7 @@ import { ContactListComponent } from './components/contactlist/contactlist.compo
 import { ProductComponent } from './components/product/product.component';
 import { ProductListComponent } from './components/productlist/productlist.component';
 import { ProductSelectComponent } from './components/productselect/productselect.component';
+import { TradeListComponent } from './components/tradelist/tradelist.component';
 import { TradeComponent } from './components/trade/trade.component';
 import { AuthComponent } from './components/auth/auth.component';
 
@@ -44,6 +45,7 @@ import { AuthComponent } from './components/auth/auth.component';
         ProductComponent,
         ProductListComponent,
         ProductSelectComponent,
+        TradeListComponent,
         TradeComponent,
         AuthComponent
     ],
@@ -71,6 +73,7 @@ import { AuthComponent } from './components/auth/auth.component';
                     { path: 'contact/:id', component: ContactComponent },
                     { path: 'productlist', component: ProductListComponent },
                     { path: 'product/:id', component: ProductComponent },
+                    { path: 'tradelist', component: TradeListComponent },
                     { path: 'trade/:id', component: TradeComponent },
                     { path: '**', redirectTo: 'home' }
                 ]

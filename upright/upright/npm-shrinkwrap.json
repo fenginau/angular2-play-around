@@ -161,6 +161,12 @@
       "integrity": "sha512-2YNL0jXYuN7w07mb1sMZQ6T6zOvGi83v8UbjhBZ8mhvI1VkQ2STU9XOrTFyvWswMyh5rW1evS+e7qltYJvTqPA==",
       "dev": true
     },
+    "@types/jquery": {
+      "version": "3.3.2",
+      "resolved": "https://registry.npmjs.org/@types/jquery/-/jquery-3.3.2.tgz",
+      "integrity": "sha1-hwAia93iS2+Y46YBJtuqs7Kjq0E=",
+      "dev": true
+    },
     "@types/webpack-env": {
       "version": "1.13.0",
       "resolved": "https://registry.npmjs.org/@types/webpack-env/-/webpack-env-1.13.0.tgz",
@@ -725,6 +731,16 @@
       "resolved": "https://registry.npmjs.org/bootstrap/-/bootstrap-3.3.7.tgz",
       "integrity": "sha1-WjiTlFSfIzMIdaOxUGVldPip63E=",
       "dev": true
+    },
+    "bootstrap-daterangepicker": {
+      "version": "2.1.30",
+      "resolved": "https://registry.npmjs.org/bootstrap-daterangepicker/-/bootstrap-daterangepicker-2.1.30.tgz",
+      "integrity": "sha1-+JPb//Wk19+qt1Rg6OppabuJaJo=",
+      "dev": true,
+      "requires": {
+        "jquery": "3.2.1",
+        "moment": "2.22.1"
+      }
     },
     "brace-expansion": {
       "version": "1.1.8",
@@ -4282,6 +4298,12 @@
       "requires": {
         "minimist": "0.0.8"
       }
+    },
+    "moment": {
+      "version": "2.22.1",
+      "resolved": "https://registry.npmjs.org/moment/-/moment-2.22.1.tgz",
+      "integrity": "sha1-Upoum/lz8lnJZD0jf9qE3jom6K0=",
+      "dev": true
     },
     "ms": {
       "version": "2.0.0",
