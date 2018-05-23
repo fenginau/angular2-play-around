@@ -23,6 +23,9 @@ namespace upright.DBContext
         public virtual DbSet<TradeProductModel> TradeProduct { get; set; }
         public virtual DbSet<TradeProductViewModel> TradeProductView { get; set; }
 
+        public virtual DbSet<AttachmentModel> Attachment { get; set; }
+        public virtual DbSet<AttachmentViewModel> AttachmentView { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TradeProductModel>()

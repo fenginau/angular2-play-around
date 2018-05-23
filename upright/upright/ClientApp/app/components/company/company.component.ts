@@ -110,10 +110,6 @@ export class CompanyComponent {
         return true;
     }
 
-    gotoTrade() {
-        this.globals.goto('/console/trade/0', { company: this.companyId });
-    }
-
     ngOnInit() {
         
     }

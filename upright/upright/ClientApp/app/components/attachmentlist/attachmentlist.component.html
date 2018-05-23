@@ -1,13 +1,13 @@
-﻿<h1 *ngIf="!inView">Trade List</h1>
-<search-area [module]="'trade'" [fields]="fields" [message]="'Click trade to get further information.'"
+﻿<h1 *ngIf="!inView">Attachment List</h1>
+<search-area [module]="'attachment'" [fields]="fields" [message]="'Click attachment to download it.'"
              [page]="currentPage" [pp]="perPage" [inView]="inView" (result)="getSearchResult($event)"></search-area>
-<p *ngIf="!tradeList ; else dataBlock">
+<p *ngIf="!attachmentList ; else dataBlock">
     <em *ngIf="!hasError">Loading...</em>
     <em *ngIf="hasError">{{hasError}}</em>
 </p>
 <ng-template #dataBlock>
     <div class="row container" *ngIf="company > 0">
-        <button type="button" class="btn btn-primary" (click)="add()">New Trade</button>
+        <button type="button" class="btn btn-primary" (click)="add()">New Attachment</button>
     </div>
     <table class="table">
         <thead>
@@ -18,10 +18,10 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let trade of tradeList" (click)="viewDetail(trade.tradeId)">
-                <td>{{ trade.companyName }}</td>
-                <td>{{ getTradeType(trade.tradeType) }}</td>
-                <td>{{ trade.tradeDate | date:globals.datePipeFormat }}</td>
+            <tr *ngFor="let attachment of attachmentList" (click)="downloadAttachment(attachment.attachmentId)">
+                <td>{{ attachment.attachmentDescription }}</td>
+                <td>{{ attachment.attachmentName }}</td>
+                <td>{{ attachment.attachmentType }}</td>
             </tr>
         </tbody>
     </table>

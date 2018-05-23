@@ -66,7 +66,8 @@ import { AuthComponent } from './components/auth/auth.component';
                     {
                         path: 'company/:id', component: CompanyComponent, children: [
                             { path: 'contact/:company', component: ContactListComponent },
-                            { path: 'product/:company', component: ProductListComponent }
+                            { path: 'product/:company', component: ProductListComponent },
+                            { path: 'trade/:company', component: TradeListComponent }
                         ]
                     },
                     { path: 'contactlist', component: ContactListComponent },

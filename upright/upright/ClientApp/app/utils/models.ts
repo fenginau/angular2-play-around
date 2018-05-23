@@ -47,10 +47,25 @@ export interface ITradeProductModel {
     total: number;
 };
 
+export interface IAttachmentModel {
+    attachemntId: number;
+    attachmentName: string;
+    attachmentDescription: string|null;
+    attachmentType: string;
+    attachmentTypeStr: string|null;
+    attachmentCreateDt: Date|string|null;
+}
+
+export interface ISelectModel {
+    key: number;
+    value: string;
+}
+
 export interface ICompanySelectModel {
     companyId: number;
     companyName: string;
 }
+
 
 
 // used by search component
