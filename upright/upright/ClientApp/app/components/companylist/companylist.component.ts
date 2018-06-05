@@ -31,7 +31,7 @@ export class CompanyListComponent {
     constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string, private globals: Globals) { }
     
     getAllCompany() {
-        this.http.get(`${this.baseUrl}api/business/GetAllCompany?pp=${this.perPage}&page=${this.currentPage}`).subscribe(result => {
+        this.http.get(`${this.globals.apiUrl}api/business/GetAllCompany?pp=${this.perPage}&page=${this.currentPage}`).subscribe(result => {
             if (result.ok) {
                 this.companyList = result.json() as ICompanyModel[];
             }
@@ -41,7 +41,7 @@ export class CompanyListComponent {
 
     getCount() {
         this.globals.loading(true);
-        this.http.get(`${this.baseUrl}api/business/GetCompanyCount`).subscribe(result => {
+        this.http.get(`${this.globals.apiUrl}api/business/GetCompanyCount`).subscribe(result => {
             if (result.ok) {
                 this.count = result.json() as number;
             }

@@ -40,7 +40,7 @@ export class ProductListComponent {
     }
 
     getAllProduct() {
-        this.http.get(`${this.baseUrl}api/business/GetAllProduct?pp=${this.perPage}&page=${this.currentPage}`).subscribe(result => {
+        this.http.get(`${this.globals.apiUrl}api/business/GetAllProduct?pp=${this.perPage}&page=${this.currentPage}`).subscribe(result => {
             if (result.ok) {
                 this.productList = result.json() as IProductModel[];
             }
@@ -49,7 +49,7 @@ export class ProductListComponent {
     }
 
     getCompanyProduct() {
-        this.http.get(`${this.baseUrl}api/business/GetCompanyProduct?pp=${this.perPage}&page=${this.currentPage}&company=${this.company}`).subscribe(result => {
+        this.http.get(`${this.globals.apiUrl}api/business/GetCompanyProduct?pp=${this.perPage}&page=${this.currentPage}&company=${this.company}`).subscribe(result => {
             if (result.ok) {
                 this.productList = result.json() as IProductModel[];
             }
@@ -59,7 +59,7 @@ export class ProductListComponent {
 
     getCount() {
         this.globals.loading(true);
-        const url = `${this.baseUrl}api/business/GetProductCount?company=${this.company}`;
+        const url = `${this.globals.apiUrl}api/business/GetProductCount?company=${this.company}`;
         this.http.get(url).subscribe(result => {
             if (result.ok) {
                 this.count = result.json() as number;
@@ -99,7 +99,7 @@ export class ProductListComponent {
     }
 
     getCompanySelect() {
-        this.http.get(`${this.baseUrl}api/business/GetCompanySelect`).subscribe(result => {
+        this.http.get(`${this.globals.apiUrl}api/business/GetCompanySelect`).subscribe(result => {
             if (result.ok) {
                 const companySelect = result.json() as ICompanySelectModel[];
                 this.fields[2].set = companySelect.map(c => ({ value: c.companyId, text: c.companyName }));

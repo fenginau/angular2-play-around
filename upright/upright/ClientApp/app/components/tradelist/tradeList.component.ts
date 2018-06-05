@@ -41,7 +41,7 @@ export class TradeListComponent {
     }
 
     getAllTrade() {
-        this.http.get(`${this.baseUrl}api/business/GetAllTrade?pp=${this.perPage}&page=${this.currentPage}`).subscribe(result => {
+        this.http.get(`${this.globals.apiUrl}api/business/GetAllTrade?pp=${this.perPage}&page=${this.currentPage}`).subscribe(result => {
             if (result.ok) {
                 this.tradeList = result.json() as ITradeModel[];
             }
@@ -50,7 +50,7 @@ export class TradeListComponent {
     }
 
     getCompanyTrade() {
-        this.http.get(`${this.baseUrl}api/business/GetCompanyTrade?pp=${this.perPage}&page=${this.currentPage}&company=${this.company}`).subscribe(result => {
+        this.http.get(`${this.globals.apiUrl}api/business/GetCompanyTrade?pp=${this.perPage}&page=${this.currentPage}&company=${this.company}`).subscribe(result => {
             if (result.ok) {
                 this.tradeList = result.json() as ITradeModel[];
             }
@@ -60,7 +60,7 @@ export class TradeListComponent {
 
     getCount() {
         this.globals.loading(true);
-        const url = `${this.baseUrl}api/business/GetTradeCount?company=${this.company}`;
+        const url = `${this.globals.apiUrl}api/business/GetTradeCount?company=${this.company}`;
         this.http.get(url).subscribe(result => {
             if (result.ok) {
                 this.count = result.json() as number;
@@ -100,7 +100,7 @@ export class TradeListComponent {
     }
 
     getCompanySelect() {
-        this.http.get(`${this.baseUrl}api/business/GetCompanySelect`).subscribe(result => {
+        this.http.get(`${this.globals.apiUrl}api/business/GetCompanySelect`).subscribe(result => {
             if (result.ok) {
                 const companySelect = result.json() as ICompanySelectModel[];
                 this.fields[1].set = companySelect.map(c => ({ value: c.companyId, text: c.companyName }));

@@ -95,7 +95,7 @@ export class TradeComponent {
 
     saveTrade() {
         this.globals.loading(true);
-        this.http.post(`${this.baseUrl}api/business/SaveTrade`, this.newTrade).subscribe(result => {
+        this.http.post(`${this.globals.apiUrl}api/business/SaveTrade`, this.newTrade).subscribe(result => {
             if (result.ok) {
                 const trade = result.json() as ITradeModel;
                 if (this.oldTrade.tradeId === 0) {
@@ -119,7 +119,7 @@ export class TradeComponent {
 
     getTrade() {
         this.globals.loading(true);
-        this.http.get(`${this.baseUrl}api/business/GetTrade?tradeid=${this.tradeId}`).subscribe(result => {
+        this.http.get(`${this.globals.apiUrl}api/business/GetTrade?tradeid=${this.tradeId}`).subscribe(result => {
             if (result.ok) {
                 this.oldTrade = result.json() as ITradeModel;
                 console.log(this.oldTrade);
@@ -140,7 +140,7 @@ export class TradeComponent {
     }
 
     getCompanyName(companyId: number) {
-        this.http.get(`${this.baseUrl}api/business/GetCompanyName?companyid=${companyId}`).subscribe(result => {
+        this.http.get(`${this.globals.apiUrl}api/business/GetCompanyName?companyid=${companyId}`).subscribe(result => {
             if (result.ok) {
                 this.newTrade.companyName = result.text() as string;
                 this.hasError = '';

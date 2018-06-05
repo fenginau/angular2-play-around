@@ -54,7 +54,7 @@ export class ProductSelectComponent {
     }
 
     getCompanySelect() {
-        this.http.get(`${this.baseUrl}api/business/GetCompanySelect`).subscribe(result => {
+        this.http.get(`${this.globals.apiUrl}api/business/GetCompanySelect`).subscribe(result => {
             if (result.ok) {
                 const companySelect = result.json() as ICompanySelectModel[];
                 this.fields[2].set = companySelect.map(c => ({ value: c.companyId, text: c.companyName }));

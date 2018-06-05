@@ -81,7 +81,7 @@ export class ProductComponent {
 
     saveProduct() {
         this.globals.loading(true);
-        this.http.post(`${this.baseUrl}api/business/SaveProduct`, this.newProduct).subscribe(result => {
+        this.http.post(`${this.globals.apiUrl}api/business/SaveProduct`, this.newProduct).subscribe(result => {
             if (result.ok) {
                 const product = result.json() as IProductModel;
                 if (this.oldProduct.productId === 0) {
@@ -105,7 +105,7 @@ export class ProductComponent {
 
     getProduct() {
         this.globals.loading(true);
-        this.http.get(`${this.baseUrl}api/business/GetProduct?productid=${this.productId}`).subscribe(result => {
+        this.http.get(`${this.globals.apiUrl}api/business/GetProduct?productid=${this.productId}`).subscribe(result => {
             if (result.ok) {
                 this.oldProduct = result.json() as IProductModel;
                 this.newProduct = { ...this.oldProduct};
@@ -120,7 +120,7 @@ export class ProductComponent {
     }
 
     getCompanySelect() {
-        this.http.get(`${this.baseUrl}api/business/GetCompanySelect`).subscribe(result => {
+        this.http.get(`${this.globals.apiUrl}api/business/GetCompanySelect`).subscribe(result => {
             if (result.ok) {
                 this.companySelect = result.json() as ICompanySelectModel[];
                 this.hasError = '';

@@ -43,7 +43,7 @@ export class ContactListComponent {
     }
 
     getAllContact() {
-        this.http.get(`${this.baseUrl}api/business/GetAllContact?pp=${this.perPage}&page=${this.currentPage}`).subscribe(result => {
+        this.http.get(`${this.globals.apiUrl}api/business/GetAllContact?pp=${this.perPage}&page=${this.currentPage}`).subscribe(result => {
             if (result.ok) {
                 this.contactList = result.json() as IContactModel[];
             }
@@ -52,7 +52,7 @@ export class ContactListComponent {
     }
 
     getCompanyContact() {
-        this.http.get(`${this.baseUrl}api/business/GetCompanyContact?pp=${this.perPage}&page=${this.currentPage}&company=${this.company}`).subscribe(result => {
+        this.http.get(`${this.globals.apiUrl}api/business/GetCompanyContact?pp=${this.perPage}&page=${this.currentPage}&company=${this.company}`).subscribe(result => {
             if (result.ok) {
                 this.contactList = result.json() as IContactModel[];
             }
@@ -62,7 +62,7 @@ export class ContactListComponent {
 
     getCount() {
         this.globals.loading(true);
-        const url = `${this.baseUrl}api/business/GetContactCount?company=${this.company}`;
+        const url = `${this.globals.apiUrl}api/business/GetContactCount?company=${this.company}`;
         this.http.get(url).subscribe(result => {
             if (result.ok) {
                 this.count = result.json() as number;
@@ -102,7 +102,7 @@ export class ContactListComponent {
     }
 
     getCompanySelect() {
-        this.http.get(`${this.baseUrl}api/business/GetCompanySelect`).subscribe(result => {
+        this.http.get(`${this.globals.apiUrl}api/business/GetCompanySelect`).subscribe(result => {
             if (result.ok) {
                 const companySelect = result.json() as ICompanySelectModel[];
                 this.fields[1].set = companySelect.map(c => ({ value: c.companyId, text: c.companyName }));

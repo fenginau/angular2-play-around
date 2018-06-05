@@ -1,3 +1,8 @@
 
 upright/.vs/
 upright/upright/appsettings.json
+
+uprightapi/.vs/
+
+uprightapi/UprightApi/bin
+uprightapi/UprightApi/obj

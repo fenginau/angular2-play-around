@@ -67,7 +67,7 @@ export class CompanyComponent {
 
     saveCompany() {
         this.globals.loading(true);
-        this.http.post(this.baseUrl + 'api/business/SaveCompany', this.newCompany).subscribe(result => {
+        this.http.post(`${this.globals.apiUrl}api/business/SaveCompany`, this.newCompany).subscribe(result => {
             if (result.ok) {
                 const company = result.json() as ICompanyModel;
                 if (this.oldCompany.companyId === 0) {
@@ -89,7 +89,7 @@ export class CompanyComponent {
 
     getCompany() {
         this.globals.loading(true);
-        this.http.get(this.baseUrl + 'api/business/GetCompany?companyid=' + this.companyId).subscribe(result => {
+        this.http.get(`${this.globals.apiUrl}api/business/GetCompany?companyid=${this.companyId}`).subscribe(result => {
             if (result.ok) {
                 this.oldCompany = result.json() as ICompanyModel;
                 this.newCompany = {...this.oldCompany};

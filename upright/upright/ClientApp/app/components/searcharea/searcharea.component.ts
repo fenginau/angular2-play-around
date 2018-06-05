@@ -127,7 +127,7 @@ export class SearchareaComponent {
     // perform the search
     getResult() {
         this.globals.loading(true);
-        this.http.post(`${this.baseUrl}api/business/Search?module=${this.module}&pp=${this.pp}&page=${this.page}`, this.searchParams).subscribe(result => {
+        this.http.post(`${this.globals.apiUrl}api/business/Search?module=${this.module}&pp=${this.pp}&page=${this.page}`, this.searchParams).subscribe(result => {
             if (result.ok) {
                 this.result.emit(result.json() as ISearchReturnModel);
             }
