@@ -23,7 +23,7 @@ namespace UprightApi.Repository
                 {
                     var attachmentList = context.AttachmentView
                         .FromSql(
-                            "SELECT * FROM UR_ATTACHMENT WHERE RELATED_OBJECT = @relatedObj AND RELATED_ID = {0}", new {relatedId, relatedObj})
+                            "SELECT * FROM UR_ATTACHMENT WHERE RELATED_OBJECT = {1} AND RELATED_ID = {0}", relatedId, relatedObj)
                         .Skip(pp * (page - 1)).Take(pp).ToList();
 
                     return attachmentList;
@@ -48,50 +48,50 @@ namespace UprightApi.Repository
             }
             catch (Exception e)
             {
-                Logger.Info("Contact - GetContact");
+                Logger.Info("Attachment - GetAttachment");
                 Logger.Error(e);
                 return null;
             }
         }
 
-        public static ContactModel SaveContact(ContactModel contact)
+        public static AttachmentModel SaveAttachment(AttachmentModel attachment)
         {
             try
             {
                 using (var context = new BusinessContext())
                 {
-                    if (contact.ContactId > 0)
+                    if (attachment.AttachmentId > 0)
                     {
-                        context.Contact.Update(contact);
+                        context.Attachment.Update(attachment);
                     }
                     else
                     {
-                        context.Contact.Add(contact);
+                        context.Attachment.Add(attachment);
                     }
                     context.SaveChanges();
-                    return contact;
+                    return attachment;
                 }
             }
             catch (Exception e)
             {
-                Logger.Info("Contact - SaveContact");
+                Logger.Info("Attachment - SaveAttachment");
                 Logger.Error(e);
                 return null;
             }
         }
 
-        public static int GetContactCount(int companyId)
+        public static int GetAttachmentCount(string relatedObj, int relatedId)
         {
             try
             {
                 using (var context = new BusinessContext())
                 {
-                    return companyId > 0 ? context.Contact.Count(c => c.CompanyId == companyId) : context.Contact.Count();
+                    return context.Attachment.Count(p => p.RelatedObject == relatedObj && p.RelatedId == relatedId.ToString());
                 }
             }
             catch (Exception e)
             {
-                Logger.Info("Contact - GetContactCount");
+                Logger.Info("Attachment - GetAttachmentCount");
                 Logger.Error(e);
                 return -1;
             }
@@ -103,12 +103,12 @@ namespace UprightApi.Repository
             {
                 var dic = new Dictionary<string, string>
                 {
-                    { "NAME", "C.CONTACT_NAME" },
-                    { "ADDRESS", "C.CONTACT_ADDRESS" },
-                    { "EMAIL", "C.CONTACT_EMAIL" },
-                    { "PHONE", "C.CONTACT_PHONE1" },
-                    { "MOBILE", "C.CONTACT_PHONE2" },
-                    { "COMPANY", "C.COMPANY_ID" }
+                    { "NAME", "A.ATTACHMENT_NAME" },
+                    { "DESCRIPTION", "A.ATTACHMENT_DESCRIPTION" },
+                    { "TYPE", "A.ATTACHMENT_TYPE" },
+                    { "CREATE_DT", "A.ATTACHMENT_CREATE_DT" },
+                    { "OBJECT", "RELATED_OBJECT" },
+                    { "RELATEID", "RELATED_ID" }
                 };
 
                 using (var context = new BusinessContext())
@@ -123,10 +123,7 @@ namespace UprightApi.Repository
                         switch (s.Key.ToUpper())
                         {
                             case "NAME":
-                            case "ADDRESS":
-                            case "EMAIL":
-                            case "PHONE":
-                            case "MOBILE":
+                            case "DESCRIPTION":
                                 var valueSet = s.Value.Split(',');
                                 foreach (var value in valueSet)
                                 {
@@ -136,23 +133,29 @@ namespace UprightApi.Repository
                                 }
                                 condStr.Append(")");
                                 break;
-                            case "COMPANY":
+                            case "TYPE":
                                 condStr.Append($"{column} IN ({s.Value})");
+                                break;
+                            case "OBJECT":
+                                condStr.Append($"{column} = '{s.Value}'");
+                                break;
+                            case "RELATEID":
+                                condStr.Append($"{column} = {s.Value}");
                                 break;
                         }
 
                         condition.AppendLine($"AND {condStr}");
                     });
                     var sql =
-                        $"SELECT C.*, CO.COMPANY_NAME FROM UR_CONTACT C LEFT JOIN UR_COMPANY CO ON C.COMPANY_ID = CO.COMPANY_ID {condition}";
-                    var count = context.ContactView.FromSql(sql).Count();
-                    var contactList = context.ContactView.FromSql(sql).Skip(pp * (page - 1)).Take(pp).ToList();
-                    return new { count, result = contactList };
+                        $"SELECT A.* FROM UR_ATTACHMENT A {condition}";
+                    var count = context.AttachmentView.FromSql(sql).Count();
+                    var attachmentList = context.AttachmentView.FromSql(sql).Skip(pp * (page - 1)).Take(pp).ToList();
+                    return new { count, result = attachmentList };
                 }
             }
             catch (Exception e)
             {
-                Logger.Info("Contact - Search");
+                Logger.Info("Attachment - Search");
                 Logger.Error(e);
                 return null;
             }

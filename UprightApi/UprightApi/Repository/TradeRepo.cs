@@ -184,6 +184,9 @@ namespace UprightApi.Repository
                             case "TYPE":
                                 condStr.Append($"{column} = {s.Value}");
                                 break;
+                            case "DATE":
+                                 
+                                break;
                         }
 
                         condition.AppendLine($"AND {condStr}");
